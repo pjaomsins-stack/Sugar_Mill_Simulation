@@ -49,7 +49,7 @@ h1{font-size:1.5rem;margin:0;line-height:1.3;color:var(--accent)}
 
 /* process line */
 .line{display:flex;gap:0;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x proximity}
-.st{flex:1 1 0;min-width:128px;scroll-snap-align:start;display:flex;align-items:stretch}
+.st{flex:1 1 0;min-width:112px;scroll-snap-align:start;display:flex;align-items:stretch}
 .card{flex:1;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:8px 8px 10px;cursor:pointer;text-align:center;font:inherit;color:inherit;display:flex;flex-direction:column;gap:2px}
 .card:hover{border-color:var(--brand)}
 .card[aria-pressed="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,var(--panel));box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
@@ -291,6 +291,105 @@ summary{font-family:var(--display);font-weight:500}
   .hero-body{padding:18px 16px}.title-block h1{font-size:1.5rem}
   .toolbar .btn{flex:1 1 auto}
 }
+
+.vhpSpec{background:#fff;color:#000;border-radius:14px;padding:12px 14px;margin-bottom:12px;border:1px solid #D5E3F3;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.vhpSpec .vs-h{font-weight:600;margin-bottom:6px;color:#0D2F66}
+.vhpSpec table{font-size:.84rem}
+.vhpSpec th,.vhpSpec td{color:#000;border-bottom:1px solid #E6EEF7;padding:4px 6px}
+.vhpSpec th{color:#333}
+.vhpSpec .okc{color:#2F7D46;font-weight:600}
+.vhpSpec .bad{color:#C23B3B;font-weight:600}
+.vhpSpec tr.nt td{color:#8A4B1C;font-size:.78rem;text-align:left;padding-top:0}
+.vhpSpec .vs-n{font-size:.76rem;color:#555;margin-top:6px}
+.line .card{padding:8px 7px 10px}.line .card .km{font-size:.76rem}
+.card .kd.info{background:#E6F1FC;color:#1B4F9C}
+
+.plan{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;background:rgba(30,158,90,.18);border:1px solid rgba(110,220,150,.45);color:#E7FFF0;border-radius:999px;padding:5px 14px 5px 5px;font-size:.9rem}
+.plan b{color:#fff}
+.plan-tag{background:#1E9E5A;color:#fff;border-radius:999px;padding:2px 10px;font-weight:600;font-size:.82rem}
+
+/* ===== branched flow ===== */
+.line{display:grid!important;grid-template-columns:repeat(8,minmax(104px,1fr) 14px) minmax(120px,1.1fr);grid-template-rows:auto auto auto;row-gap:0;column-gap:0;min-width:0;overflow-x:auto;padding:6px 4px 14px}
+.line>.st{display:flex;min-width:0}
+.line>.pipe{display:flex;align-items:center;justify-content:center}
+.pipe span.vhpPipe{background:repeating-linear-gradient(90deg,#1E9E5A 0 8px,#7DD3A3 8px 14px)!important;background-size:28px 100%}
+.bcell{position:relative;height:64px}
+.branch{position:relative;height:100%}
+.bdown{position:absolute;left:calc((100% - 28px)/6);transform:translateX(-50%);top:0;bottom:0;display:flex;justify-content:center}
+.bdown span{display:block;height:100%;width:6px;border-radius:999px;background:repeating-linear-gradient(180deg,#1E9E5A 0 8px,#7DD3A3 8px 14px);background-size:100% 28px;animation:flowv 1.2s linear infinite}
+@keyframes flowv{to{background-position:0 28px}}
+.blabel{position:absolute;left:calc((100% - 28px)/6 + 18px);top:50%;transform:translateY(-50%);font-size:.82rem;color:#CFE3F8;line-height:1.45;white-space:nowrap}
+.blabel b{color:#8FE3B0}
+.blabel .ret{color:#F3D27A}.blabel .ret b{color:#F3D27A}
+.card.vline{border-color:#9ED9B6!important;background:#F4FBF7!important}
+.card.vline[aria-pressed="true"]{box-shadow:0 0 0 2px #1E9E5A,var(--shadow)!important;background:#EAF7EF!important}
+.card.vline .no{background:#DDF3E6!important;color:#1E7A3C!important}
+.card.result{cursor:default;--ink:#000;--muted:#333;background:#fff;color:#000;border:1px solid #D5E3F3}
+.card.result.raw{border-top:4px solid var(--accent)}
+.card.result.vres{border-top:4px solid #1E9E5A;background:#F4FBF7}
+.card.result .no{background:#E8EEF6;color:#000}
+.card.result .kv{font-size:1.05rem}
+.card.final .tot{font-size:.78rem;color:#D5E4F8;margin-top:6px;line-height:1.4}
+.vcell{display:flex;align-items:stretch;padding:0 10px 0 0}
+.vinfo{flex:1;background:rgba(30,158,90,.12);border:1px dashed rgba(125,211,163,.6);border-radius:16px;padding:14px 16px;color:#DDF5E7;font-size:.88rem;line-height:1.55;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.vinfo .vi-h{font-family:var(--display);font-weight:600;font-size:1.05rem;color:#fff}
+.vinfo .vi-f{color:#8FE3B0;font-weight:600}
+.line>.st:nth-child(n){min-width:0}
+@media (max-width:1100px){.line{grid-template-columns:repeat(8,104px 14px) 130px}}
+
+.lossCard{background:#fff;color:#000;border-radius:var(--r-lg);padding:18px 20px;margin:4px 0 18px;box-shadow:var(--shadow)}
+.lc-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 18px;margin-bottom:8px}
+.lossCard h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0;color:#0D2F66}
+.lc-sub{font-size:.8rem;color:#444}
+.lc-grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:start}
+@media (max-width:1000px){.lc-grid{grid-template-columns:1fr}}
+.lossCard .box{overflow-x:auto}
+#lossFlow{width:100%;min-width:900px;height:auto;display:block;font-family:"IBM Plex Sans Thai",Tahoma,sans-serif}
+.lossBars{border-left:1px solid #E1EAF5;padding-left:16px}
+.lb-h{font-weight:700;color:#0D2F66;margin-bottom:8px}
+.lb-r{margin-bottom:10px}
+.lb-t{display:flex;justify-content:space-between;font-size:.86rem}
+.lb-t b{color:#C23B3B}
+.lb-bar{height:8px;background:#F2F5F9;border-radius:999px;overflow:hidden;margin:3px 0}
+.lb-bar i{display:block;height:100%;background:linear-gradient(90deg,#F08A8A,#C23B3B);border-radius:999px;transition:width .3s}
+.lb-s{font-size:.76rem;color:#444}
+.lb-s .pos{color:#2F7D46;font-weight:700}.lb-s .neg{color:#C23B3B;font-weight:700}
+.lb-tot{display:flex;justify-content:space-between;border-top:1px solid #E1EAF5;padding-top:8px;margin-top:6px;font-weight:700}
+.lb-tot b{color:#C23B3B}
+
+.lc-top{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin:6px 0 16px}
+@media (max-width:760px){.lc-top{grid-template-columns:1fr 1fr}.lc-top .lt-bar{grid-column:1/-1;grid-row:2}}
+.lt-l{font-size:.85rem;color:#333}
+.lt-v{font-family:var(--display);font-weight:600;font-size:2.2rem;line-height:1.1}
+.lt-v span{font-size:1rem}
+.lt.got .lt-v{color:#1B4F9C}.lt.lost{text-align:right}.lt.lost .lt-v{color:#C23B3B}
+.lt-s{font-size:.8rem;color:#444}.lt-s .pos{color:#2F7D46}.lt-s .neg{color:#C23B3B}
+.lt-bar{position:relative;height:30px;border-radius:999px;background:repeating-linear-gradient(135deg,#F6B3B3 0 8px,#F9CACA 8px 16px);overflow:hidden}
+.lt-fill{height:100%;background:linear-gradient(90deg,#2E86DE,#1E9E5A);border-radius:999px 0 0 999px;transition:width .3s}
+.lt-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:600;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.lc-grid{grid-template-columns:300px minmax(0,1fr)!important;gap:24px!important}
+@media (max-width:900px){.lc-grid{grid-template-columns:1fr!important}}
+.waffle{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;width:100%;max-width:300px;aspect-ratio:1}
+.waffle i{border-radius:5px;display:block}
+.wlegend{display:flex;flex-direction:column;gap:4px;margin-top:10px;font-size:.82rem;color:#000}
+.wlegend span{display:flex;align-items:center;gap:6px}
+.wlegend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.wlegend i.lossSw{background:linear-gradient(90deg,#8C9A2E 25%,#C0782B 25% 50%,#D64545 50% 75%,#6B4F2A 75%)}
+.lossList{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;align-content:start}
+.li{display:flex;gap:12px;border:1px solid #E1EAF5;border-left:5px solid var(--c);border-radius:14px;padding:10px 12px;background:#fff}
+.li-ic{flex:0 0 64px}
+.li-ic svg{width:64px;height:auto;background:#F2F6FB;border-radius:10px;padding:3px}
+.li-b{flex:1;min-width:0}
+.li-t{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.li-t .sw{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.li-st{font-weight:500;font-size:.72rem;color:#1B4F9C;background:#EAF3FF;border-radius:999px;padding:0 8px}
+.li-row{display:flex;align-items:center;gap:10px;margin:2px 0}
+.li-v{font-family:var(--display);font-weight:600;font-size:1.45rem;color:#000;min-width:78px}
+.li-v small{font-size:.8rem;font-weight:500}
+.li-bar{flex:1;height:8px;background:#F2F5F9;border-radius:999px;overflow:hidden}
+.li-bar i{display:block;height:100%;background:var(--c);border-radius:999px;transition:width .3s}
+.li-s{font-size:.78rem;color:#333}.li-s .pos{color:#2F7D46}.li-s .neg{color:#C23B3B}
+.li-tip{font-size:.76rem;color:#555;margin-top:3px}
 </style>
 </head>
 <body>
@@ -311,10 +410,11 @@ summary{font-family:var(--display);font-weight:500}
     <div class="hero-top">
       <div class="title-block">
         <h1>จำลองกระบวนการหีบอ้อย</h1>
-        <p class="sub">ใช้ข้อมูลจริงฤดูหีบ 65/66–69/70 ปรับค่าแต่ละขั้น แล้วดูผลต่อ Yield</p>
+        <p class="sub">ใช้ข้อมูลจริงฤดูหีบ 65/66–68/69 ปรับค่าแต่ละขั้น แล้วดูผลต่อ Yield</p>
+        <div class="plan"><span class="plan-tag">แผนฤดู 69/70</span> อัตราหีบเท่าเดิม · แบ่งผลิต <b>VHP 200 ตัน/วัน</b> ที่เหลือเป็นทรายดิบ · ประมาณการจากค่าจริงฤดูที่เลือก</div>
       </div>
       <label class="seasonSel"><span>ค่าฐาน</span><select id="season">
-          <option value="68/69" selected>ฤดู 68/69</option><option value="67/68">ฤดู 67/68</option><option value="66/67">ฤดู 66/67</option><option value="65/66">ฤดู 65/66</option><option value="69/70">ฤดู 69/70 (16 วัน)</option><option value="ALL">เฉลี่ยทุกฤดู</option></select></label>
+          <option value="68/69" selected>ฤดู 68/69 (ล่าสุด)</option><option value="67/68">ฤดู 67/68</option><option value="66/67">ฤดู 66/67</option><option value="65/66">ฤดู 65/66</option><option value="ALL">เฉลี่ย 4 ฤดู</option></select></label>
     </div>
     <div class="toolbar">
         <button class="btn rec-all" id="applyAll">✦ ใช้ค่าแนะนำทั้งหมด <span id="allGain"></span></button>
@@ -337,12 +437,21 @@ summary{font-family:var(--display);font-weight:500}
   <nav class="line" id="line" aria-label="ขั้นตอนการผลิต"></nav>
   <p class="legend">ความหนาของท่อสีฟ้า = ปริมาณน้ำตาล (Pol) ที่ไหลต่อไป · ตัวเลขสีแดงใต้แต่ละขั้น = น้ำตาลที่สูญเสียในขั้นนั้น · สีเขียว/แดง = ดีขึ้น/แย่ลงเทียบค่าฐาน</p>
 
+  <section class="lossCard">
+    <div class="lc-head"><h2>น้ำตาลในอ้อยหายไปไหนบ้าง</h2><div class="lc-sub">คิดจากน้ำตาล (Pol) ในอ้อยทุก 100 กก. · 1 ช่อง = 1 กก.</div></div>
+    <div class="lc-top" id="lcTop"></div>
+    <div class="lc-grid">
+      <div class="waffleWrap"><div class="waffle" id="waffle" role="img" aria-label="แผนภาพ 100 ช่อง"></div><div class="wlegend" id="wlegend"></div></div>
+      <div class="lossList" id="lossList"></div>
+    </div>
+  </section>
+
   <section class="detail" id="detail"></section>
 
   <section class="dataCard">
     <h2>ข้อมูลจริงรายฤดู โรงงานน้ำตาลสีคิ้ว</h2>
     <div class="box"><table id="seasonTbl"></table></div>
-    <p class="note">ที่มา: S Database (จบหีบ) ข้อมูลรายวัน 447 วัน ใช้วันที่หีบเต็มวัน 369 วันในการสอบเทียบ · สูญเสียไม่ทราบสาเหตุรายวันแกว่งมาก เพราะรวมการเปลี่ยนแปลงสต็อกในกระบวนการ</p>
+    <p class="note">ที่มา: S Database (จบหีบ) ข้อมูลรายวัน 4 ฤดู (65/66–68/69) 431 วัน ใช้วันที่หีบเต็มวัน 358 วันในการสอบเทียบ · ไม่รวมฤดู 69/70 เพราะยังไม่ใช่ค่าจริง · สูญเสียไม่ทราบสาเหตุรายวันแกว่งมาก เพราะรวมการเปลี่ยนแปลงสต็อกในกระบวนการ</p>
   </section>
 
   <details>
@@ -352,72 +461,83 @@ summary{font-family:var(--display);font-weight:500}
       <div>
         <div class="box"><svg id="tornado" viewBox="0 0 640 400" role="img" aria-label="กราฟความไว" style="width:100%;height:auto;min-width:520px"></svg></div>
         <p class="note">แต่ละแถบ = Yield เปลี่ยนเท่าไร (kg/ตันอ้อย) ถ้าปรับค่านั้นลง/ขึ้น 15% ของช่วงจากค่าปัจจุบัน</p>
-        <p class="note">แบบจำลองสอบเทียบจากข้อมูลจริงของโรงงาน: สูญเสียในชาน = f(PI, Imbibition, ความชื้นชาน, Fiber) R² = 0.48 · Purity กากน้ำตาล = f(Purity C-Mass, %RS, TSAI, Purity Rise) R² = 0.56 · %RS กากน้ำตาล = f(pH Limed Juice, RS Ratio) · Purity น้ำเชื่อม = f(Purity น้ำอ้อยรวม, pH น้ำใส) R² = 0.86 · สูญเสียกากน้ำตาลจากสูตร SJM ปรับเทียบกับค่าจริง · ที่ค่าฐาน แบบจำลองให้ผลตรงกับค่าเฉลี่ยจริงของฤดู · ข้อมูลไม่พบผลชัดเจนของ Brix แมสควิท C, อุณหภูมิกากน้ำตาล, Brix น้ำเชื่อม และอัตราหีบต่อชั่วโมง</p>
+        <p class="note">แบบจำลองสอบเทียบจากข้อมูลจริงของโรงงาน: สูญเสียในชาน = f(PI, Imbibition, ความชื้นชาน, Fiber) R² = 0.47 · Purity กากน้ำตาล = f(Purity C-Mass, %RS, TSAI, Purity Rise) R² = 0.54 · %RS กากน้ำตาล = f(pH Limed Juice, RS Ratio) · Purity น้ำเชื่อม = f(Purity น้ำอ้อยรวม, pH น้ำใส) R² = 0.86 · สูญเสียกากน้ำตาลจากสูตร SJM ปรับเทียบกับค่าจริง · ที่ค่าฐาน แบบจำลองให้ผลตรงกับค่าเฉลี่ยจริงของฤดู · ข้อมูลไม่พบผลชัดเจนของ Brix แมสควิท C, อุณหภูมิกากน้ำตาล, Brix น้ำเชื่อม และอัตราหีบต่อชั่วโมง</p>
       </div>
     </div>
   </details>
 </div>
 <script>
 
-const DATA={"seasons": {"65/66": {"polc": 15.1201, "fib": 13.2206, "mjpur": 87.1418, "pi": 90.5155, "imb": 326.3506, "bagm": 46.8813, "phl": 7.5226, "phc": 7.1316, "cakepc": 3.7536, "cakepol": 2.3269, "rsrrise": -1.1122, "cpur": 56.2605, "molrs": 17.8762, "moltsai": 52.9979, "cmolrise": 1.8603, "spol": 99.2423, "lund": 7.3654, "lbag": 3.7247, "lcake": 0.5812, "lmol": 6.4105, "lsand": 0.0583, "sypur": 87.5061, "molpur": 34.8517, "cane": 11546.5344, "yield": 124.7888, "or": 81.8361, "ext": 96.2753, "bhr": 85.0717, "sybx": 67.6714, "cbx": 97.0394, "days": 110, "ndays": 84, "caneTot": 1029740.01, "sugarTot": 128116.758}, "66/67": {"polc": 14.3609, "fib": 13.1541, "mjpur": 83.9654, "pi": 90.73, "imb": 291.3533, "bagm": 46.4306, "phl": 7.4653, "phc": 7.0438, "cakepc": 3.2537, "cakepol": 2.0806, "rsrrise": 0.1545, "cpur": 54.2203, "molrs": 21.4536, "moltsai": 52.5484, "cmolrise": 1.088, "spol": 99.2519, "lund": 9.1258, "lbag": 3.4334, "lcake": 0.4728, "lmol": 7.395, "lsand": 0.063, "sypur": 83.8944, "molpur": 30.3905, "cane": 12433.3144, "yield": 114.8295, "or": 79.2975, "ext": 96.5666, "bhr": 82.1172, "sybx": 67.7024, "cbx": 97.1815, "days": 98, "ndays": 83, "caneTot": 1057929.65, "sugarTot": 121804.56199999999}, "67/68": {"polc": 14.4645, "fib": 13.002, "mjpur": 83.3066, "pi": 90.5835, "imb": 320.9158, "bagm": 46.5727, "phl": 7.4819, "phc": 7.075, "cakepc": 3.319, "cakepol": 1.4458, "rsrrise": 0.17, "cpur": 52.0394, "molrs": 23.7174, "moltsai": 57.4975, "cmolrise": 1.3013, "spol": 99.1745, "lund": 10.373, "lbag": 3.1165, "lcake": 0.333, "lmol": 7.9153, "lsand": 0.0528, "sypur": 82.9876, "molpur": 32.1689, "cane": 12850.614, "yield": 114.2177, "or": 78.2123, "ext": 96.8835, "bhr": 80.7258, "sybx": 66.4195, "cbx": 97.0745, "days": 102, "ndays": 90, "caneTot": 1168737.5099999998, "sugarTot": 134076.88}, "68/69": {"polc": 14.517, "fib": 13.2096, "mjpur": 83.5543, "pi": 90.7635, "imb": 327.2865, "bagm": 45.3133, "phl": 7.5171, "phc": 7.0675, "cakepc": 3.4425, "cakepol": 1.2781, "rsrrise": 0.1471, "cpur": 54.5226, "molrs": 20.9657, "moltsai": 54.867, "cmolrise": 0.7936, "spol": 99.3197, "lund": 10.1954, "lbag": 2.6576, "lcake": 0.3035, "lmol": 7.7424, "lsand": 0.0706, "sypur": 83.2134, "molpur": 32.3589, "cane": 12416.5722, "yield": 115.5019, "or": 79.038, "ext": 97.3424, "bhr": 81.1981, "sybx": 66.8517, "cbx": 97.2268, "days": 121, "ndays": 101, "caneTot": 1293739.38, "sugarTot": 150882.77}, "69/70": {"polc": 13.7793, "fib": 11.8944, "mjpur": 85.8883, "pi": 90.7256, "imb": 301.8546, "bagm": 47.5825, "phl": 7.6028, "phc": 7.0756, "cakepc": 3.5222, "cakepol": 1.8699, "rsrrise": -1.3467, "cpur": 58.2729, "molrs": 15.4977, "moltsai": 42.7077, "cmolrise": 1.244, "spol": 99.2457, "lund": 13.4368, "lbag": 3.1599, "lcake": 0.4755, "lmol": 5.4184, "lsand": 0.083, "sypur": 86.506, "molpur": 28.8353, "cane": 12187.5489, "yield": 106.4347, "or": 76.6357, "ext": 96.8401, "bhr": 79.1737, "sybx": 66.7072, "cbx": 96.9, "days": 16, "ndays": 11, "caneTot": 152337.63, "sugarTot": 15132.14}, "ALL": {"polc": 14.5872, "fib": 13.1102, "mjpur": 84.4606, "pi": 90.6546, "imb": 316.6268, "bagm": 46.2865, "phl": 7.4998, "phc": 7.0773, "cakepc": 3.4326, "cakepol": 1.7203, "rsrrise": -0.1723, "cpur": 54.3396, "molrs": 20.4878, "moltsai": 53.2689, "cmolrise": 1.2383, "spol": 99.2494, "lund": 9.4889, "lbag": 3.1718, "lcake": 0.4074, "lmol": 7.2148, "lsand": 0.0622, "sypur": 84.3688, "molpur": 31.7689, "cane": 12329.796, "yield": 116.8089, "or": 79.4423, "ext": 96.8282, "bhr": 82.0847, "sybx": 67.1226, "cbx": 97.1191, "days": 108, "ndays": 369, "caneTot": null, "sugarTot": null}}, "q": {"polc": {"0.05": 12.5508, "0.1": 12.7523, "0.5": 14.8233, "0.9": 15.6231, "0.95": 15.7541}, "fib": {"0.05": 11.86, "0.1": 12.07, "0.5": 13.22, "0.9": 14.07, "0.95": 14.236}, "mjpur": {"0.05": 81.4162, "0.1": 82.3769, "0.5": 84.219, "0.9": 87.3619, "0.95": 87.7593}, "pi": {"0.05": 90.3552, "0.1": 90.4154, "0.5": 90.617, "0.9": 90.9503, "0.95": 91.037}, "imb": {"0.05": 266.0026, "0.1": 273.6824, "0.5": 312.3902, "0.9": 369.9046, "0.95": 385.3328}, "bagm": {"0.05": 45.0658, "0.1": 45.1945, "0.5": 46.3592, "0.9": 47.3151, "0.95": 47.7452}, "phl": {"0.05": 7.3267, "0.1": 7.3807, "0.5": 7.5038, "0.9": 7.6171, "0.95": 7.6592}, "phc": {"0.05": 6.8258, "0.1": 6.8892, "0.5": 7.08, "0.9": 7.2732, "0.95": 7.3248}, "cakepc": {"0.05": 2.8564, "0.1": 3.0004, "0.5": 3.4111, "0.9": 3.9311, "0.95": 4.1284}, "cakepol": {"0.05": 1.1386, "0.1": 1.1845, "0.5": 1.5058, "0.9": 2.5341, "0.95": 3.7377}, "rsrrise": {"0.05": -1.9947, "0.1": -1.4323, "0.5": -0.1255, "0.9": 1.2027, "0.95": 1.5988}, "cpur": {"0.05": 50.2878, "0.1": 51.3059, "0.5": 54.391, "0.9": 57.34, "0.95": 58.3099}, "molrs": {"0.05": 17.0536, "0.1": 17.6199, "0.5": 21.5125, "0.9": 23.7457, "0.95": 24.7767}, "moltsai": {"0.05": 51.6138, "0.1": 52.3575, "0.5": 54.8048, "0.9": 57.6894, "0.95": 58.1474}, "cmolrise": {"0.05": -0.0296, "0.1": 0.0, "0.5": 1.2157, "0.9": 2.4937, "0.95": 2.6808}, "spol": {"0.05": 99.1115, "0.1": 99.1516, "0.5": 99.2525, "0.9": 99.3493, "0.95": 99.3713}, "lund": {"0.05": 0.1561, "0.1": 2.7142, "0.5": 8.9334, "0.9": 14.7113, "0.95": 28.0063}, "lbag": {"0.05": 2.4657, "0.1": 2.5629, "0.5": 3.1565, "0.9": 3.7089, "0.95": 4.0262}, "lcake": {"0.05": 0.2596, "0.1": 0.2726, "0.5": 0.3523, "0.9": 0.6454, "0.95": 0.9354}, "lmol": {"0.05": 3.5368, "0.1": 5.4201, "0.5": 7.511, "0.9": 9.1425, "0.95": 10.0066}, "lsand": {"0.05": 0.0445, "0.1": 0.0467, "0.5": 0.0578, "0.9": 0.0872, "0.95": 0.1037}, "sypur": {"0.05": 81.1131, "0.1": 81.9255, "0.5": 84.0291, "0.9": 87.6135, "0.95": 88.0463}, "molpur": {"0.05": 29.4641, "0.1": 30.4578, "0.5": 32.6097, "0.9": 35.645, "0.95": 36.4054}, "cane": {"0.05": 8598.886, "0.1": 10271.404, "0.5": 12717.23, "0.9": 13610.604, "0.95": 13748.988}, "yield": {"0.05": 89.3343, "0.1": 96.7302, "0.5": 118.8452, "0.9": 131.0661, "0.95": 134.8257}, "or": {"0.05": 65.5136, "0.1": 74.4508, "0.5": 79.7924, "0.9": 84.467, "0.95": 87.4319}, "ext": {"0.05": 95.9738, "0.1": 96.2911, "0.5": 96.8435, "0.9": 97.4371, "0.95": 97.5343}, "bhr": {"0.05": 67.847, "0.1": 77.1483, "0.5": 82.2067, "0.9": 87.6412, "0.95": 90.6953}, "sybx": {"0.05": 64.216, "0.1": 64.8304, "0.5": 67.1864, "0.9": 69.2545, "0.95": 69.9165}, "cbx": {"0.05": 96.468, "0.1": 96.687, "0.5": 97.125, "0.9": 97.593, "0.95": 97.719}}};
-const SEASON_LABEL={"65/66":"ฤดู 65/66","66/67":"ฤดู 66/67","67/68":"ฤดู 67/68","68/69":"ฤดู 68/69","69/70":"ฤดู 69/70 (16 วัน)","ALL":"เฉลี่ยทุกฤดู"};
+const DATA={"seasons": {"65/66": {"polc": 15.1201, "fib": 13.2206, "mjpur": 87.1418, "pi": 90.5155, "imb": 326.3506, "bagm": 46.8813, "phl": 7.5226, "phc": 7.1316, "cakepc": 3.7536, "cakepol": 2.3269, "rsrrise": -1.1122, "cpur": 56.2605, "molrs": 17.8762, "moltsai": 52.9979, "cmolrise": 1.8603, "spol": 99.2423, "lund": 7.3654, "lbag": 3.7247, "lcake": 0.5812, "lmol": 6.4105, "lsand": 0.0583, "sypur": 87.5061, "molpur": 34.8517, "cane": 11546.5344, "yield": 124.7888, "or": 81.8361, "ext": 96.2753, "bhr": 85.0717, "sybx": 67.6714, "cbx": 97.0394, "days": 110, "ndays": 84, "caneTot": 1029740.01, "sugarTot": 128116.758}, "66/67": {"polc": 14.3609, "fib": 13.1541, "mjpur": 83.9654, "pi": 90.73, "imb": 291.3533, "bagm": 46.4306, "phl": 7.4653, "phc": 7.0438, "cakepc": 3.2537, "cakepol": 2.0806, "rsrrise": 0.1545, "cpur": 54.2203, "molrs": 21.4536, "moltsai": 52.5484, "cmolrise": 1.088, "spol": 99.2519, "lund": 9.1258, "lbag": 3.4334, "lcake": 0.4728, "lmol": 7.395, "lsand": 0.063, "sypur": 83.8944, "molpur": 30.3905, "cane": 12433.3144, "yield": 114.8295, "or": 79.2975, "ext": 96.5666, "bhr": 82.1172, "sybx": 67.7024, "cbx": 97.1815, "days": 98, "ndays": 83, "caneTot": 1057929.65, "sugarTot": 121804.56199999999}, "67/68": {"polc": 14.4645, "fib": 13.002, "mjpur": 83.3066, "pi": 90.5835, "imb": 320.9158, "bagm": 46.5727, "phl": 7.4819, "phc": 7.075, "cakepc": 3.319, "cakepol": 1.4458, "rsrrise": 0.17, "cpur": 52.0394, "molrs": 23.7174, "moltsai": 57.4975, "cmolrise": 1.3013, "spol": 99.1745, "lund": 10.373, "lbag": 3.1165, "lcake": 0.333, "lmol": 7.9153, "lsand": 0.0528, "sypur": 82.9876, "molpur": 32.1689, "cane": 12850.614, "yield": 114.2177, "or": 78.2123, "ext": 96.8835, "bhr": 80.7258, "sybx": 66.4195, "cbx": 97.0745, "days": 102, "ndays": 90, "caneTot": 1168737.5099999998, "sugarTot": 134076.88}, "68/69": {"polc": 14.517, "fib": 13.2096, "mjpur": 83.5543, "pi": 90.7635, "imb": 327.2865, "bagm": 45.3133, "phl": 7.5171, "phc": 7.0675, "cakepc": 3.4425, "cakepol": 1.2781, "rsrrise": 0.1471, "cpur": 54.5226, "molrs": 20.9657, "moltsai": 54.867, "cmolrise": 0.7936, "spol": 99.3197, "lund": 10.1954, "lbag": 2.6576, "lcake": 0.3035, "lmol": 7.7424, "lsand": 0.0706, "sypur": 83.2134, "molpur": 32.3589, "cane": 12416.5722, "yield": 115.5019, "or": 79.038, "ext": 97.3424, "bhr": 81.1981, "sybx": 66.8517, "cbx": 97.2268, "days": 121, "ndays": 101, "caneTot": 1293739.38, "sugarTot": 150882.77}, "ALL": {"polc": 14.6129, "fib": 13.1606, "mjpur": 84.4146, "pi": 90.6523, "imb": 316.9626, "bagm": 46.2451, "phl": 7.4971, "phc": 7.0771, "cakepc": 3.4301, "cakepol": 1.7149, "rsrrise": -0.1374, "cpur": 54.2199, "molrs": 20.629, "moltsai": 53.5637, "cmolrise": 1.2427, "spol": 99.2493, "lund": 9.3257, "lbag": 3.1722, "lcake": 0.4051, "lmol": 7.2607, "lsand": 0.0615, "sypur": 84.3013, "molpur": 31.8406, "cane": 12337.1687, "yield": 117.1695, "or": 79.5545, "ext": 96.8278, "bhr": 82.2021, "sybx": 67.1338, "cbx": 97.1338, "days": 108, "ndays": 358, "caneTot": null, "sugarTot": null}}, "q": {"polc": {"0.05": 12.5455, "0.1": 12.7346, "0.5": 14.8697, "0.9": 15.6253, "0.95": 15.7552}, "fib": {"0.05": 11.93, "0.1": 12.14, "0.5": 13.26, "0.9": 14.073, "0.95": 14.24}, "mjpur": {"0.05": 81.386, "0.1": 82.3247, "0.5": 84.1474, "0.9": 87.4191, "0.95": 87.7642}, "pi": {"0.05": 90.3566, "0.1": 90.4153, "0.5": 90.6129, "0.9": 90.947, "0.95": 91.0368}, "imb": {"0.05": 265.6587, "0.1": 273.0156, "0.5": 312.8562, "0.9": 370.8168, "0.95": 386.4626}, "bagm": {"0.05": 45.0646, "0.1": 45.1887, "0.5": 46.3375, "0.9": 47.1886, "0.95": 47.6061}, "phl": {"0.05": 7.3423, "0.1": 7.3814, "0.5": 7.5025, "0.9": 7.6111, "0.95": 7.6445}, "phc": {"0.05": 6.8283, "0.1": 6.8891, "0.5": 7.0818, "0.9": 7.2661, "0.95": 7.3179}, "cakepc": {"0.05": 2.8517, "0.1": 2.9952, "0.5": 3.4054, "0.9": 3.9348, "0.95": 4.1301}, "cakepol": {"0.05": 1.1353, "0.1": 1.1838, "0.5": 1.4981, "0.9": 2.5354, "0.95": 3.7858}, "rsrrise": {"0.05": -1.8743, "0.1": -1.4018, "0.5": -0.1067, "0.9": 1.2037, "0.95": 1.5949}, "cpur": {"0.05": 50.0503, "0.1": 51.2825, "0.5": 54.2823, "0.9": 56.9581, "0.95": 57.9861}, "molrs": {"0.05": 17.1202, "0.1": 17.6443, "0.5": 21.6146, "0.9": 23.7779, "0.95": 24.839}, "moltsai": {"0.05": 51.7959, "0.1": 52.3655, "0.5": 54.8048, "0.9": 57.8054, "0.95": 58.1717}, "cmolrise": {"0.05": -0.0206, "0.1": 0.0, "0.5": 1.2205, "0.9": 2.4818, "0.95": 2.6702}, "spol": {"0.05": 99.1106, "0.1": 99.1506, "0.5": 99.2529, "0.9": 99.3486, "0.95": 99.3691}, "lund": {"0.05": 0.0627, "0.1": 2.5938, "0.5": 8.871, "0.9": 14.2911, "0.95": 26.2896}, "lbag": {"0.05": 2.4609, "0.1": 2.5602, "0.5": 3.1548, "0.9": 3.7228, "0.95": 4.0304}, "lcake": {"0.05": 0.2589, "0.1": 0.2726, "0.5": 0.3485, "0.9": 0.6467, "0.95": 0.9442}, "lmol": {"0.05": 3.8983, "0.1": 5.5011, "0.5": 7.5365, "0.9": 9.1588, "0.95": 10.0426}, "lsand": {"0.05": 0.0444, "0.1": 0.0466, "0.5": 0.0574, "0.9": 0.086, "0.95": 0.1012}, "sypur": {"0.05": 81.1098, "0.1": 81.9135, "0.5": 83.9143, "0.9": 87.6635, "0.95": 88.0585}, "molpur": {"0.05": 29.5538, "0.1": 30.5136, "0.5": 32.5524, "0.9": 35.4965, "0.95": 36.316}, "cane": {"0.05": 8560.2365, "0.1": 10271.156, "0.5": 12726.865, "0.9": 13613.387, "0.95": 13750.273}, "yield": {"0.05": 89.5474, "0.1": 97.3335, "0.5": 119.607, "0.9": 131.1706, "0.95": 134.9173}, "or": {"0.05": 65.607, "0.1": 74.8753, "0.5": 79.8107, "0.9": 84.5671, "0.95": 87.6157}, "ext": {"0.05": 95.9696, "0.1": 96.2772, "0.5": 96.8452, "0.9": 97.4398, "0.95": 97.5391}, "bhr": {"0.05": 67.9864, "0.1": 77.4831, "0.5": 82.2526, "0.9": 87.7884, "0.95": 90.8217}, "sybx": {"0.05": 64.1842, "0.1": 64.8027, "0.5": 67.2139, "0.9": 69.3408, "0.95": 69.9698}, "cbx": {"0.05": 96.495, "0.1": 96.7005, "0.5": 97.14, "0.9": 97.605, "0.95": 97.725}}};
+const AEX={"65/66": 70.87, "66/67": 70.64, "67/68": 71.6, "68/69": 73.27, "ALL": 71.69}; for(const k in AEX) DATA.seasons[k].aex=AEX[k];
+const SEASON_LABEL={"65/66":"ฤดู 65/66","66/67":"ฤดู 66/67","67/68":"ฤดู 67/68","68/69":"ฤดู 68/69","ALL":"เฉลี่ย 4 ฤดู"};
 let SEASON="68/69", SB=DATA.seasons[SEASON];
 const Q=DATA.q;
 const STAGES = [
   {id:"cane", name:"0 อ้อยเข้า", short:"อ้อยเข้า", params:[
     {k:"crush",l:"อ้อยเข้าหีบ",u:"ตัน/วัน",min:5000,max:16000,step:50,s:"cane",hint:"ใช้คำนวณตันน้ำตาลและรายได้"},
     {k:"polc",l:"Pol % อ้อย",u:"%",min:12,max:16.5,step:0.01,s:"polc",hint:"ความหวานของอ้อยเข้าหีบ ตัวกำหนดน้ำตาลสูงสุดที่ได้"},
-    {k:"fib",l:"Fiber % อ้อย",u:"%",min:11,max:15,step:0.01,s:"fib",hint:"ข้อมูลโรงงาน: เส้นใยเพิ่ม 1% → สูญเสียในชาน +0.20% Pol"},
-    {k:"mjpur",l:"Purity น้ำอ้อยรวม",u:"%",min:80,max:89,step:0.01,s:"mjpur",hint:"ข้อมูลโรงงาน: เพิ่ม 1 จุด → Purity น้ำเชื่อม +1.11 จุด"},
+    {k:"fib",l:"Fiber % อ้อย",u:"%",min:11,max:15,step:0.01,s:"fib",hint:"ข้อมูลโรงงาน: เส้นใยเพิ่ม 1% → สูญเสียในชาน +0.19% Pol"},
+    {k:"mjpur",l:"Purity น้ำอ้อยรวม",u:"%",min:80,max:89,step:0.01,s:"mjpur",hint:"ข้อมูลโรงงาน: เพิ่ม 1 จุด → Purity น้ำเชื่อม +1.09 จุด"},
     {k:"price",l:"ราคาน้ำตาล",u:"บาท/ตัน",min:10000,max:30000,step:500,d:18000},
     {k:"days",l:"จำนวนวันหีบต่อฤดู",u:"วัน",min:60,max:150,step:1,s:"days"}
   ]},
   {id:"prep", name:"1 เตรียมอ้อย", short:"เตรียมอ้อย", params:[
-    {k:"pi",l:"Preparation Index (PI)",u:"%",min:89.5,max:92,step:0.01,s:"pi",hint:"ข้อมูลโรงงาน: PI +1 → สูญเสียในชาน −0.32% Pol · ข้อมูลจริงอยู่ช่วงแคบ 90.2–91.4 นอกช่วงนี้เป็นการประมาณต่อ"}
+    {k:"pi",l:"Preparation Index (PI)",u:"%",min:89.5,max:92,step:0.01,s:"pi",hint:"ข้อมูลโรงงาน: PI +1 → สูญเสียในชาน −0.28% Pol · ข้อมูลจริงอยู่ช่วงแคบ 90.2–91.4 นอกช่วงนี้เป็นการประมาณต่อ"}
   ]},
   {id:"mill", name:"2 หีบสกัด", short:"หีบสกัด", params:[
-    {k:"imb",l:"Imbibition % Fiber",u:"%",min:220,max:450,step:1,s:"imb",hint:"ข้อมูลโรงงาน: +100% เส้นใย → สูญเสียในชาน −0.35% Pol"},
+    {k:"imb",l:"Imbibition % Fiber",u:"%",min:220,max:450,step:1,s:"imb",hint:"ข้อมูลโรงงาน: +100% เส้นใย → สูญเสียในชาน −0.34% Pol"},
     {k:"bagm",l:"ความชื้นชานอ้อย",u:"%",min:44,max:49.5,step:0.01,s:"bagm",hint:"ข้อมูลโรงงาน: ผลแรงที่สุดในขั้นหีบ ความชื้น +1% → สูญเสียในชาน +0.37% Pol (ปรับด้วย mill setting/แรงกด)"}
   ]},
   {id:"clar", name:"3 ทำใสน้ำอ้อย", short:"ทำใส", params:[
-    {k:"phl",l:"pH Limed Juice",u:"",min:7.2,max:7.9,step:0.01,s:"phl",hint:"ข้อมูลโรงงาน: pH +0.1 → %RS กากน้ำตาลลด 1.07 → Purity กากน้ำตาลเพิ่ม ~0.84 (น้ำตาลรีดิวซ์ถูกทำลาย กากน้ำตาลหมดยากขึ้น)"},
-    {k:"phc",l:"pH Clarified Juice",u:"",min:6.7,max:7.5,step:0.01,s:"phc",hint:"pH น้ำใสต่ำลง ซูโครสแตกตัวมากขึ้น Purity น้ำเชื่อมลดลง (+0.31 ต่อ pH 1 หน่วย)"},
+    {k:"phl",l:"pH Limed Juice",u:"",min:7.2,max:7.9,step:0.01,s:"phl",hint:"ข้อมูลโรงงาน: pH +0.1 → %RS กากน้ำตาลลด 0.81 → Purity กากน้ำตาลเพิ่ม ~0.61 (น้ำตาลรีดิวซ์ถูกทำลาย กากน้ำตาลหมดยากขึ้น)"},
+    {k:"phc",l:"pH Clarified Juice",u:"",min:6.7,max:7.5,step:0.01,s:"phc",hint:"pH น้ำใสต่ำลง ซูโครสแตกตัวมากขึ้น Purity น้ำเชื่อมลดลง (+0.26 ต่อ pH 1 หน่วย)"},
     {k:"cakepc",l:"Filter Cake % อ้อย",u:"%",min:2.5,max:4.5,step:0.01,s:"cakepc"},
     {k:"cakepol",l:"Pol ใน Filter Cake",u:"%",min:0.8,max:4,step:0.01,s:"cakepol",hint:"ลดได้ด้วยน้ำล้างหน้าหม้อกรองและสภาพผ้ากรอง"}
   ]},
   {id:"evap", name:"4 ระเหย", short:"ระเหย", params:[
-    {k:"rsrrise",l:"R.S. Ratio เพิ่มขึ้น (น้ำเชื่อม − น้ำใส)",u:"",min:-2.5,max:2.5,step:0.01,s:"rsrrise",hint:"ดัชนีการแตกตัวของซูโครสในหม้อระเหย ข้อมูลโรงงาน: +1 → สูญเสียไม่ทราบสาเหตุ +0.91% Pol (ลดด้วยเวลาค้าง/อุณหภูมิ/pH ที่เหมาะสม)"}
+    {k:"rsrrise",l:"R.S. Ratio เพิ่มขึ้น (น้ำเชื่อม − น้ำใส)",u:"",min:-2.5,max:2.5,step:0.01,s:"rsrrise",hint:"ดัชนีการแตกตัวของซูโครสในหม้อระเหย ข้อมูลโรงงาน: +1 → สูญเสียไม่ทราบสาเหตุ +0.93% Pol (ลดด้วยเวลาค้าง/อุณหภูมิ/pH ที่เหมาะสม)"}
   ]},
   {id:"pan", name:"5 เคี่ยว / ตกผลึก", short:"เคี่ยว", params:[
-    {k:"cpur",l:"Purity C-Massecuite",u:"%",min:48,max:60,step:0.05,s:"cpur",hint:"ข้อมูลโรงงาน: +1 จุด → Purity กากน้ำตาล +0.15"}
+    {k:"cpur",l:"Purity C-Massecuite",u:"%",min:48,max:60,step:0.05,s:"cpur",hint:"ข้อมูลโรงงาน: +1 จุด → Purity กากน้ำตาล +0.09"}
   ]},
   {id:"cent", name:"6 ปั่นแยก", short:"ปั่นแยก", params:[
-    {k:"cmolrise",l:"Purity Rise ที่หม้อปั่น C",u:"จุด",min:0,max:3,step:0.01,s:"cmolrise",hint:"ผลึกละลาย/ตะแกรงรั่วที่หม้อปั่น C ข้อมูลโรงงาน: +1 → Purity กากน้ำตาล +0.23"},
+    {k:"cmolrise",l:"Purity Rise ที่หม้อปั่น C",u:"จุด",min:0,max:3,step:0.01,s:"cmolrise",hint:"ผลึกละลาย/ตะแกรงรั่วที่หม้อปั่น C ข้อมูลโรงงาน: +1 → Purity กากน้ำตาล +0.20"},
     {k:"spol",l:"Pol น้ำตาลทรายดิบ",u:"%",min:98.8,max:99.5,step:0.01,s:"spol",hint:"Pol สูงขึ้นน้ำหนักน้ำตาลต่อ Pol เท่าเดิมจะน้อยลงเล็กน้อย"},
     {k:"und",l:"สูญเสียไม่ทราบสาเหตุ (พื้นฐาน)",u:"% Pol",min:2,max:16,step:0.05,s:"lund",hint:"การสูญเสียที่ใหญ่ที่สุดของโรงงาน (~10% Pol) รวมจุลินทรีย์ รั่วไหล น้ำตาลใน condensate/น้ำหล่อเย็น และสต็อกในกระบวนการ"}
+  ]},
+  {id:"vpan", name:"V1 เคี่ยว VHP", short:"เคี่ยว VHP", no:"VHP 1", params:[
+    {k:"vhpTons",l:"ปริมาณผลิต VHP",u:"ตัน/วัน",min:0,max:1500,step:5,d:200,hint:"แผนฤดู 69/70 = 200 ตัน/วัน · อัตราหีบเท่าเดิม แบ่งน้ำตาลส่วนนี้ไปทำ VHP ที่เหลือเป็นทรายดิบ (ถ้าเกินน้ำตาลที่ผลิตได้ทั้งหมด จะถูกจำกัดไว้ที่ 100%)"},
+    {k:"vhpEx",l:"Exhaustion แมสควิท VHP",u:"%",min:40,max:80,step:0.5,d:62,hint:"ผลึกที่ได้ต่อซูโครสในแมสควิท VHP ส่วนที่เหลือ (Run-off) ส่งกลับไปเคี่ยวที่สายดิบ · เทียบแมสควิท A สายดิบจากข้อมูลจริง ~71–73%"}
+  ]},
+  {id:"vcent", name:"V2 ปั่น VHP", short:"ปั่น VHP", no:"VHP 2", params:[
+    {k:"vhpPol",l:"Pol เป้าหมาย VHP",u:"%",min:99.3,max:99.8,step:0.01,d:99.45,hint:"สเปค VHP ทั่วไป Pol ≥ 99.40 ยิ่งสูง ต้องใช้น้ำล้างที่หม้อปั่น VHP มากขึ้น"},
+    {k:"vhpDiss",l:"ผลึกละลายจากน้ำล้าง ต่อ Pol ที่เพิ่ม 0.1",u:"% ของ VHP",min:0.5,max:3,step:0.05,d:1.2,hint:"เฉพาะหม้อปั่น VHP ค่าประมาณเริ่มต้น ควรปรับตามผลทดลองจริง"},
+    {k:"vhpLoss",l:"สูญเสียต่อรอบการเคี่ยวซ้ำ",u:"% ของส่วนที่หมุนเวียน",min:0.2,max:5,step:0.1,d:1,hint:"Run-off ที่กลับไปสายดิบต้องเคี่ยวอีกรอบ ส่วนหนึ่งแตกตัว/สูญหายระหว่างทาง"},
+    {k:"vhpPrem",l:"ราคาพรีเมียม VHP",u:"บาท/ตัน",min:0,max:2000,step:50,d:500,hint:"ส่วนต่างราคาเหนือน้ำตาลทรายดิบ ใส่ตามสัญญาขายจริง"}
   ]}
 ];
 const ALL = STAGES.flatMap(s=>s.params.map(p=>({...p,stage:s.id})));
 const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 function makeDef(){return Object.fromEntries(ALL.map(p=>[p.k, p.s? +(+SB[p.s]).toFixed(p.k==="crush"?0:2) : (p.k==="price"?(window.__price||p.d):p.d)]));}
 let DEF=makeDef();
-let cur = {...DEF}, base = {...DEF}, activeTab = "mill";
+let cur = {...DEF}, base = {...DEF,vhpTons:0}, activeTab = "vpan";
 const sjm=(J,M,S)=>S*(J-M)/(J*(S-M));
 function model(p){
   const r={}, B=SB;
-  r.lbag = Math.max(0.5, B.lbag -0.3196*(p.pi-B.pi) -0.00351*(p.imb-B.imb) +0.3702*(p.bagm-B.bagm) +0.1995*(p.fib-B.fib));
+  r.lbag = Math.max(0.5, B.lbag -0.2806*(p.pi-B.pi) -0.00344*(p.imb-B.imb) +0.3735*(p.bagm-B.bagm) +0.1910*(p.fib-B.fib));
   r.ext = 100-r.lbag;
   r.lcake = B.lcake*(p.cakepc*p.cakepol/p.polc)/(B.cakepc*B.cakepol/B.polc);
   r.lsand = B.lsand;
-  r.J = B.sypur + 1.1057*(p.mjpur-B.mjpur) + 0.3053*(p.phc-B.phc);
-  r.molrs = B.molrs -10.728*(p.phl-B.phl) + 0.7759*(p.rsrrise-B.rsrrise);
-  r.M = clamp(B.molpur + 0.1498*(p.cpur-B.cpur) -0.7829*(r.molrs-B.molrs) + 0.2318*(p.cmolrise-B.cmolrise), 20, 50);
+  r.J = B.sypur + 1.0913*(p.mjpur-B.mjpur) + 0.2572*(p.phc-B.phc);
+  r.molrs = B.molrs -8.0835*(p.phl-B.phl) + 0.7509*(p.rsrrise-B.rsrrise);
+  r.M = clamp(B.molpur + 0.0901*(p.cpur-B.cpur) -0.7542*(r.molrs-B.molrs) + 0.1985*(p.cmolrise-B.cmolrise), 20, 50);
   r.S = p.spol;
   const k = B.lmol/((100-B.lbag-B.lcake-B.lsand)*(1-sjm(B.sypur,B.molpur,B.spol)));
   const avail = 100-r.lbag-r.lcake-r.lsand;
   r.sjm = sjm(r.J,r.M,r.S)*100;
   r.lmol = k*avail*(1-r.sjm/100);
-  r.lund = Math.max(0, p.und + 0.9078*(p.rsrrise-B.rsrrise));
+  r.lund = Math.max(0, p.und + 0.9257*(p.rsrrise-B.rsrrise));
   r.or = 100-r.lbag-r.lcake-r.lsand-r.lmol-r.lund;
   r.bhr = r.or/r.ext*100;
   r.yieldPct = p.polc*r.or/100/(r.S/100);
@@ -427,6 +547,28 @@ function model(p){
   r.flow={cane:P, mj:P*(1-r.lbag/100), cj:P*(1-(r.lbag+r.lcake+r.lsand)/100)};
   r.flow.bh=r.flow.cj; r.flow.rec=r.flow.cj-P*r.lmol/100; r.flow.sugar=r.flow.rec-P*r.lund/100;
   r.bagLoss=r.lbag; r.undetLoss=r.lund; r.molLoss=r.lmol;
+  const Sv=Math.max(p.vhpPol,r.S);
+  r.vhpDissPct = Math.max(0,(Sv-r.S)/0.1)*p.vhpDiss;
+  r.aex = B.aex||71.7;
+  r.vhpRecirc = Math.max(0, 100/p.vhpEx - 100/r.aex) + r.vhpDissPct/100;  // extra t pol recirculated per t VHP pol
+  const polDay = p.polc/100*r.or/100*p.crush;
+  const keep = 1 - r.vhpRecirc*(p.vhpLoss/100);
+  const v = Math.min(1, (p.vhpTons||0)*(Sv/100)/(polDay*keep));
+  r.vhpShare = v*100; r.vhpCapped = (p.vhpTons||0)>0 && v>=1;
+  r.lvhp = r.or*v*r.vhpRecirc*(p.vhpLoss/100);
+  r.rawLoad = r.vhpRecirc*polDay*v;
+  r.vhpRecircPct = r.vhpRecirc*100;
+  const orRaw=r.or*(1-v), orV=r.or*v-r.lvhp;
+  r.rawPct = p.polc*orRaw/100/(r.S/100);
+  r.vhpPct = p.polc*orV/100/(Sv/100);
+  r.yieldPct = r.rawPct+r.vhpPct; r.yieldKg=r.yieldPct*10;
+  r.or = orRaw+orV; r.bhr=r.or/r.ext*100;
+  r.sugarDay = r.yieldPct/100*p.crush;
+  r.vhpDay = r.vhpPct/100*p.crush; r.rawDay=r.rawPct/100*p.crush;
+  r.revDay = r.sugarDay*p.price + r.vhpDay*(p.vhpPrem||0);
+  r.Sv=Sv;
+  if(!(p.vhpTons>0)){r.rawLoad=0;r.vhpRecircPct=0;}
+  r.flow.final = r.flow.sugar - P*r.lvhp/100;
   return r;
 }
 
@@ -486,6 +628,32 @@ cent:`<svg viewBox="0 0 140 90" aria-hidden="true">
  <g fill="var(--mol)"><path d="M50 74 q3 -6 6 0 a3 3 0 0 1 -6 0z"/><path d="M64 78 q3 -6 6 0 a3 3 0 0 1 -6 0z"/></g>
  <path d="M96 76 L104 60 L112 66 L120 54 L130 76Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="1.5"/>
  <path d="M94 46h16" stroke="var(--muted)" stroke-width="2"/><path d="M106 42l5 4l-5 4" stroke="var(--muted)" stroke-width="2" fill="none"/></svg>`,
+vpan:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M30 40 a36 28 0 0 1 72 0V70L86 84H46L30 70Z" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <path d="M34 46H98V69L84 80H48L34 69Z" fill="#FFF4D6"/>
+ <g fill="var(--sugar)" stroke="#1E9E5A" stroke-width=".8"><rect x="44" y="52" width="6" height="6" transform="rotate(45 47 55)"/><rect x="60" y="60" width="7" height="7" transform="rotate(45 63.5 63.5)"/><rect x="76" y="50" width="6" height="6" transform="rotate(45 79 53)"/><rect x="86" y="62" width="5" height="5" transform="rotate(45 88.5 64.5)"/><rect x="52" y="70" width="6" height="6" transform="rotate(45 55 73)"/><rect x="70" y="71" width="6" height="6" transform="rotate(45 73 74)"/></g>
+ <path d="M66 12V2" stroke="var(--steel)" stroke-width="4"/>
+ <rect x="47" y="22" width="38" height="13" rx="6.5" fill="#1E9E5A"/><text x="66" y="31.5" font-size="9" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">VHP</text></svg>`,
+vcent:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <g stroke="var(--brand)" stroke-width="2.4" stroke-linecap="round"><line x1="58" y1="9" x2="52" y2="20"/><line x1="70" y1="7" x2="70" y2="20"/><line x1="82" y1="9" x2="88" y2="20"/></g>
+ <rect x="54" y="2" width="32" height="6" rx="3" fill="var(--steel)"/>
+ <rect x="40" y="24" width="60" height="46" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <ellipse cx="70" cy="24" rx="30" ry="7" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <rect x="48" y="31" width="44" height="34" fill="var(--sugar)" stroke="#1E9E5A" stroke-width="1.5"/>
+ <path d="M30 34 a40 14 0 0 0 0 26" stroke="#1E9E5A" stroke-width="3" fill="none"/><path d="M26 56 l4 6 l5 -5" stroke="#1E9E5A" stroke-width="3" fill="none"/>
+ <g fill="var(--juice)"><path d="M62 78 q3 -6 6 0 a3 3 0 0 1 -6 0z"/><path d="M74 82 q3 -6 6 0 a3 3 0 0 1 -6 0z"/></g>
+ <text x="70" y="52" font-size="9" text-anchor="middle" fill="#1E9E5A" font-family="sans-serif" font-weight="700">VHP</text></svg>`,
+vsugar:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M44 16 Q70 8 96 16 L104 80 Q70 88 36 80Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="3"/>
+ <path d="M44 16 Q70 24 96 16" stroke="var(--steel)" stroke-width="2" fill="none"/>
+ <rect x="48" y="38" width="44" height="22" rx="4" fill="#1E9E5A"/>
+ <text x="70" y="53.5" font-size="11" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">VHP</text>
+ <path d="M104 18 l2.4 6 l6 2.4 l-6 2.4 l-2.4 6 l-2.4 -6 l-6 -2.4 l6 -2.4z" fill="var(--juice)"/></svg>`,
+total:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M18 24 Q40 17 62 24 L68 80 Q40 87 12 80Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="3"/>
+ <rect x="20" y="42" width="40" height="18" rx="3" fill="var(--accent)"/><text x="40" y="54.5" font-size="8.5" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">RAW</text>
+ <path d="M78 24 Q100 17 122 24 L128 80 Q100 87 72 80Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="3"/>
+ <rect x="80" y="42" width="40" height="18" rx="3" fill="#1E9E5A"/><text x="100" y="54.5" font-size="8.5" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">VHP</text></svg>`,
 sugar:`<svg viewBox="0 0 140 90" aria-hidden="true">
  <path d="M44 16 Q70 8 96 16 L104 80 Q70 88 36 80Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="3"/>
  <path d="M44 16 Q70 24 96 16" stroke="var(--steel)" stroke-width="2" fill="none"/>
@@ -500,12 +668,14 @@ const INFO = {
  clar:{what:"เติมปูนขาวให้ตกตะกอน pH Limed Juice สูงไปทำลายน้ำตาลรีดิวซ์ ทำให้กากน้ำตาลหมดยาก ส่วนกากตะกอนพาน้ำตาลออกไปบางส่วน",km:"%RS กากน้ำตาล (สูง = ดี)"},
  evap:{what:"ไล่น้ำจนเป็นน้ำเชื่อมข้น ถ้า R.S. Ratio เพิ่มขึ้นมาก แปลว่าซูโครสแตกตัว กลายเป็นการสูญเสียไม่ทราบสาเหตุ",km:"Purity น้ำเชื่อม (J)"},
  pan:{what:"เคี่ยวและตกผลึก A-B-C น้ำตาลที่ค้างในกากน้ำตาลขึ้นกับ Purity C-Massecuite และองค์ประกอบกากน้ำตาล (RS/Ash)",km:"Purity กากน้ำตาล (ต่ำ = ดี)"},
+ vpan:{what:"หม้อเคี่ยวสาย VHP แยกเฉพาะ รับส่วนที่แบ่งมาจากเคี่ยวดิบ ไปเคี่ยวเป็นแมสควิท VHP Exhaustion ต่ำกว่าแมสควิท A สายดิบ ส่วนที่ไม่ตกผลึกจะหมุนเวียนกลับ",km:"แบ่งมาจากเคี่ยวดิบ"},
+ vcent:{what:"หม้อปั่นสาย VHP แยกเฉพาะ ล้างผลึกให้ Pol ถึงสเปค Run-off ส่งกลับไปเคี่ยวที่สายดิบ เป็นจุดที่เกิดการสูญเสียเล็กน้อยและเพิ่มภาระหม้อเคี่ยวสายดิบ",km:"Pol น้ำตาล VHP"},
  cent:{what:"ปั่นแยกผลึกออกจากกากน้ำตาล Purity Rise ที่หม้อปั่น C บอกผลึกที่ละลายหรือหลุดผ่านตะแกรง และรวมการสูญเสียไม่ทราบสาเหตุไว้ในขั้นนี้",km:"Pol น้ำตาล"}
 };
-function keyVal(id,r,p){return {cane:[p.polc,"%",1,2],prep:[r.ext,"%",1,2],mill:[r.lbag,"%",-1,2],clar:[r.molrs,"%",1,2],evap:[r.J,"%",1,2],pan:[r.M,"%",-1,2],cent:[r.S,"%",1,2]}[id]}
-function lossVal(id,r){return {cane:null,prep:null,mill:r.lbag,clar:r.lcake+r.lsand,evap:null,pan:r.lmol,cent:r.lund}[id]}
-function lossName(id){return {mill:"ติดชานอ้อย",clar:"Filter cake + ทราย",pan:"ค้างในกากน้ำตาล",cent:"ไม่ทราบสาเหตุ"}[id]}
-function flowAfter(id,r){return {cane:r.flow.cane,prep:r.flow.cane,mill:r.flow.mj,clar:r.flow.cj,evap:r.flow.bh,pan:r.flow.rec,cent:r.flow.sugar}[id]}
+function keyVal(id,r,p){return {cane:[p.polc,"%",1,2],prep:[r.ext,"%",1,2],mill:[r.lbag,"%",-1,2],clar:[r.molrs,"%",1,2],evap:[r.J,"%",1,2],pan:[r.M,"%",-1,2],cent:[r.S,"%",1,2],vpan:[r.vhpShare,"%",0,1],vcent:[r.Sv,"%",0,2]}[id]}
+function lossVal(id,r){return {cane:null,prep:null,mill:r.lbag,clar:r.lcake+r.lsand,evap:null,pan:r.lmol,cent:r.lund,vpan:null,vcent:r.lvhp}[id]}
+function lossName(id){return {mill:"ติดชานอ้อย",clar:"Filter cake + ทราย",pan:"ค้างในกากน้ำตาล",cent:"ไม่ทราบสาเหตุ",vcent:"Run-off หมุนเวียน"}[id]}
+function flowAfter(id,r){return {cane:r.flow.cane,prep:r.flow.cane,mill:r.flow.mj,clar:r.flow.cj,evap:r.flow.bh,pan:r.flow.rec,cent:r.flow.sugar*(1-r.vhpShare/100),vpan:r.flow.rec*r.vhpShare/100,vcent:r.flow.final*r.vhpShare/100,pan:r.flow.rec*(1-r.vhpShare/100)}[id]}
 
 const fmt=(x,d=2)=>x.toLocaleString("th-TH",{minimumFractionDigits:d,maximumFractionDigits:d});
 const sgn=(x,d=2)=>(x>0?"+":x<0?"−":"±")+fmt(Math.abs(x),d);
@@ -514,31 +684,40 @@ const decimals=s=>(String(s).split(".")[1]||"").length;
 
 function buildLine(){
   const line=document.getElementById("line"); line.innerHTML="";
-  STAGES.forEach((s,i)=>{
-    const st=document.createElement("div"); st.className="st";
-    st.innerHTML=`<button class="card" id="card-${s.id}" aria-pressed="${s.id===activeTab}">
-      ${ICON[s.id]}<div class="no">ขั้นที่ ${i}</div><div class="nm">${s.short}</div>
+  const card=(s,i)=>`<button class="card${s.id.startsWith("v")?" vline":""}" id="card-${s.id}" aria-pressed="${s.id===activeTab}">
+      ${ICON[s.id]}<div class="no">${s.no||"ขั้นที่ "+i}</div><div class="nm">${s.short}</div>
       <div class="km">${INFO[s.id].km}</div><div class="kv" id="kv-${s.id}"></div><div class="kd" id="kd-${s.id}"></div>
       <div class="ls" id="ls-${s.id}"></div><div class="potential" id="pot-${s.id}"></div></button>`;
-    st.querySelector("button").onclick=()=>{activeTab=s.id;buildLine();buildDetail();};
-    line.appendChild(st);
-    const pp=document.createElement("div"); pp.className="pipe"; pp.innerHTML=`<span id="pipe-${s.id}"></span>`;
-    line.appendChild(pp);
-  });
-  const f=document.createElement("div"); f.className="st";
-  f.innerHTML=`<div class="card final" role="group" aria-label="ผลลัพธ์">${ICON.sugar}<div class="no">ผลลัพธ์</div><div class="nm">น้ำตาลที่ได้</div>
-    <div class="km">Yield</div><div class="kv" id="kv-final"></div><div class="kd" id="kd-final"></div><div class="ls" style="color:var(--muted)" id="ls-final"></div></div>`;
-  line.appendChild(f);
+  const place=(html,col,row,cls="cell")=>{const d=document.createElement("div");d.className=cls;d.style.gridColumn=col;d.style.gridRow=row;d.innerHTML=html;line.appendChild(d);return d;};
+  const pipe=(id,col,row,v)=>place(`<span id="pipe-${id}"${v?' class="vhpPipe"':''}></span>`,col,row,"pipe");
+  const main=STAGES.filter(s=>!s.id.startsWith("v"));
+  main.forEach((s,i)=>{ const el=place(card(s,i),String(2*i+1),"1","st"); pipe(s.id,String(2*i+2),"1"); });
+  // raw sugar result
+  place(`<div class="card result raw">${ICON.sugar}<div class="no">ผลลัพธ์สายดิบ</div><div class="nm">น้ำตาลทรายดิบ</div><div class="km">Pol <span id="rawPol"></span></div><div class="kv" id="kv-raw"></div><div class="kd" id="kd-raw"></div></div>`,"15","1","st");
+  pipe("rawout","16","1");
+  // branch connector under pan (col 11) to vcent area
+  place(`<div class="branch"><div class="bdown"><span id="pipe-branch"></span></div><div class="blabel">แบ่ง <b id="brShare"></b> ไปสาย VHP<br><span class="ret">↺ Run-off กลับเคี่ยวดิบ <b id="brRet"></b> ตัน Pol/วัน</span></div></div>`,"11 / 16","2","bcell");
+  const vs=STAGES.filter(s=>s.id.startsWith("v"));
+  vs.forEach((s,k)=>{ place(card(s),String(11+2*k),"3","st"); pipe(s.id,String(12+2*k),"3",true); });
+  place(`<div class="card result vres">${ICON.vsugar}<div class="no">ผลลัพธ์สาย VHP</div><div class="nm">น้ำตาล VHP</div><div class="km">Pol <span id="vhpPolOut"></span></div><div class="kv" id="kv-vsug"></div><div class="kd" id="kd-vsug"></div></div>`,"15","3","st");
+  pipe("vout","16","3",true);
+  // info box at left of VHP row
+  place(`<div class="vinfo"><div class="vi-h">สาย VHP แยกเฉพาะ</div><div>หม้อเคี่ยวและหม้อปั่น VHP ไม่ปนกับสายดิบ น้ำตาลทรายดิบจึงยังได้ Pol เท่าเดิม</div><div class="vi-f">เคี่ยวดิบ → เคี่ยว VHP → ปั่น VHP → น้ำตาล VHP</div></div>`,"1 / 10","3","vcell");
+  // total
+  place(`<div class="card final" role="group" aria-label="ผลลัพธ์รวม">${ICON.total}<div class="no">ผลลัพธ์รวม</div><div class="nm">น้ำตาลที่ได้ทั้งหมด</div>
+    <div class="km">Yield</div><div class="kv" id="kv-final"></div><div class="kd" id="kd-final"></div><div class="tot" id="tot-split"></div><div class="ls" style="color:var(--muted)" id="ls-final"></div></div>`,"17","1 / 4","st");
+  line.querySelectorAll("button.card").forEach(b=>b.onclick=()=>{activeTab=b.id.slice(5);buildLine();buildDetail();});
   render();
 }
 
 function buildDetail(){
   const s=STAGES.find(x=>x.id===activeTab), i=STAGES.indexOf(s);
   const box=document.getElementById("detail");
-  box.innerHTML=`<div><h2>${ICON[s.id]}<span>ขั้นที่ ${i}: ${s.short}</span></h2><p class="what">${INFO[s.id].what}</p>
+  box.innerHTML=`<div><h2>${ICON[s.id]}<span>${s.no||"ขั้นที่ "+i}: ${s.short}</span></h2><p class="what">${INFO[s.id].what}</p>
     <div id="params"></div><div class="btns"><button class="btn" id="resetStage">คืนค่าขั้นนี้</button></div></div>
     <div class="chain"><h3>ผลที่ส่งต่อไปตามสายการผลิต</h3><div id="chain"></div></div>`;
   const pb=box.querySelector("#params");
+  if(s.id==="vcent"){const sc=document.createElement("div");sc.className="vhpSpec";sc.id="vhpSpec";pb.before(sc);}
   s.params.forEach(p=>{
     const d=decimals(p.step), el=document.createElement("div"); el.className="prm";
     el.innerHTML=`<div class="top"><label for="in-${p.k}">${p.l}</label><span class="numbox"><button type="button" class="stepb" data-dir="-1" aria-label="ลดค่า ${p.l}">−</button><input type="number" inputmode="decimal" class="num" id="v-${p.k}" min="${p.min}" max="${p.max}" step="any" aria-label="พิมพ์ค่า ${p.l}"><button type="button" class="stepb" data-dir="1" aria-label="เพิ่มค่า ${p.l}">+</button><span class="u">${p.u}</span></span></div><div class="numerr" id="ne-${p.k}"></div>
@@ -577,7 +756,8 @@ function chainItems(b,c){
     it("ระเหย",[["Purity น้ำเชื่อม (J)",b.J,c.J,1,2,"%"],["สูญเสียไม่ทราบสาเหตุ",b.lund,c.lund,-1,2,"% Pol"]]),
     it("เคี่ยว / ตกผลึก",[["Purity กากน้ำตาล (M)",b.M,c.M,-1,2,"%"],["สูญเสียในกากน้ำตาล",b.lmol,c.lmol,-1,2,"% Pol"]]),
     it("ปั่นแยก",[["Pol น้ำตาล",b.S,c.S,1,2,"%"],["BHR",b.bhr,c.bhr,1,2,"%"]]),
-    it("น้ำตาลที่ได้",[["Overall Recovery",b.or,c.or,1,2,"%"],["Yield",b.yieldKg,c.yieldKg,1,2,"kg/ตันอ้อย"]])
+    it("ผลิต VHP (สายแยก)",[["น้ำตาล VHP",b.vhpDay,c.vhpDay,0,0,"ตัน/วัน"],["สัดส่วน VHP",b.vhpShare,c.vhpShare,0,1,"% ของน้ำตาล"],["น้ำตาลทรายดิบ",b.rawDay,c.rawDay,0,0,"ตัน/วัน"],["Pol หมุนเวียนกลับสายดิบ",b.rawLoad,c.rawLoad,-1,0,"ตัน/วัน"],["สูญเสียจากการหมุนเวียน",b.lvhp,c.lvhp,-1,3,"% Pol"]]),
+    it("น้ำตาลที่ได้",[["รายได้",b.revDay/1e6,c.revDay/1e6,1,3,"ล้านบาท/วัน"],["Overall Recovery",b.or,c.or,1,2,"%"],["Yield",b.yieldKg,c.yieldKg,1,2,"kg/ตันอ้อย"]])
   ];
 }
 
@@ -599,27 +779,34 @@ function render(){
     const diff=cur[p.k]-base[p.k];
     document.getElementById("b-"+p.k).textContent=Math.abs(diff)<1e-9?`ฐาน ${fmt(base[p.k],d)}`:`ฐาน ${fmt(base[p.k],d)} (${sgn(diff,d)})`;
   });
-  const maxFlow=Math.max(cur.pol,base.pol,10);
+  const maxFlow=Math.max(cur.polc,base.polc,10);
   STAGES.forEach(s=>{
     const [v,u,g,d]=keyVal(s.id,c,cur), [bv]=keyVal(s.id,b,base), dv=v-bv;
     const kv=document.getElementById("kv-"+s.id); if(!kv) return;
     kv.textContent=fmt(v,d)+u;
-    const kd=document.getElementById("kd-"+s.id); kd.className="kd "+cls(dv,g,Math.pow(10,-d-1));
+    const kd=document.getElementById("kd-"+s.id); kd.className="kd "+(g===0?"info":cls(dv,g,Math.pow(10,-d-1)));
     kd.textContent=Math.abs(dv)<Math.pow(10,-d-1)?"":sgn(dv,d);
     const l=lossVal(s.id,c);
     document.getElementById("ls-"+s.id).innerHTML=l==null?"&nbsp;":`เสีย ${fmt(l,2)}% Pol<br><span style="color:var(--muted)">${lossName(s.id)}</span>`;
-    document.getElementById("pipe-"+s.id).style.height=Math.max(3,flowAfter(s.id,c)/maxFlow*34)+"px";
+    const pe=document.getElementById("pipe-"+s.id); if(pe) pe.style.height=Math.max(3,flowAfter(s.id,c)/maxFlow*34)+"px";
   });
+  const setP=(id,v)=>{const e=document.getElementById("pipe-"+id); if(e) e.style[id==="branch"?"width":"height"]=Math.max(3,v/maxFlow*34)+"px";};
+  setP("rawout",c.flow.sugar*(1-c.vhpShare/100)); setP("vout",c.flow.final*c.vhpShare/100); setP("branch",c.flow.rec*c.vhpShare/100);
+  const setKV=(id,v,bv,u,d)=>{const e=document.getElementById("kv-"+id); if(!e) return; e.textContent=fmt(v,d)+u; const k=document.getElementById("kd-"+id); const dv=v-bv; k.className="kd info"; k.textContent=Math.abs(dv)<0.5?"":sgn(dv,0);};
+  setKV("raw",c.rawDay,b.rawDay," ตัน/วัน",0); setKV("vsug",c.vhpDay,b.vhpDay," ตัน/วัน",0);
+  const rp=document.getElementById("rawPol"); if(rp){rp.textContent=fmt(c.S,2)+"%"; document.getElementById("vhpPolOut").textContent=cur.vhpTons>0?fmt(c.Sv,2)+"%":"–";
+    document.getElementById("brShare").textContent=fmt(c.vhpShare,1)+"%"; document.getElementById("brRet").textContent=fmt(c.rawLoad||0,0);
+    document.getElementById("tot-split").innerHTML=`ดิบ ${fmt(c.rawDay,0)} + VHP ${fmt(c.vhpDay,0)}<br>= ${fmt(c.sugarDay,0)} ตัน/วัน`;}
   const dy=c.yieldKg-b.yieldKg;
   document.getElementById("kv-final").textContent=fmt(c.yieldKg,1)+" kg/tc";
   const kdF=document.getElementById("kd-final"); kdF.className="kd "+cls(dy,1,0.005); kdF.textContent=Math.abs(dy)<0.005?"":sgn(dy,2);
   document.getElementById("ls-final").textContent=`Recovery รวม ${fmt(c.or,1)}%`;
   document.getElementById("yk").textContent=fmt(c.yieldKg,1);
-  const dDay=c.sugarDay-b.sugarDay, dSeason=dDay*cur.days*cur.price/1e6;
+  const dDay=c.sugarDay-b.sugarDay, dSeason=(c.revDay-b.revDay)*cur.days/1e6;
   const att=attribution();
   document.getElementById("say").innerHTML=Math.abs(dy)<0.005
    ? `ยังเท่ากับค่าฐาน (สกัดได้ ${fmt(c.ext,1)}% × กู้คืนในห้องต้ม ${fmt(c.bhr,1)}%) ลองกดเลือกขั้นตอนแล้วเลื่อนปรับค่าดู`
-   : `Yield <b class="${cls(dy)}">${dy>0?"เพิ่มขึ้น":"ลดลง"} ${fmt(Math.abs(dy),2)} kg/ตันอ้อย</b> เท่ากับน้ำตาล${dy>0?"เพิ่ม":"ลด"} <b>${fmt(Math.abs(dDay),1)} ตัน/วัน</b> หรือประมาณ <b class="${cls(dy)}">${sgn(dSeason,1)} ล้านบาท</b> ต่อฤดูหีบ`+
+   : `Yield <b class="${cls(dy)}">${dy>0?"เพิ่มขึ้น":"ลดลง"} ${fmt(Math.abs(dy),2)} kg/ตันอ้อย</b> เท่ากับน้ำตาล${dy>0?"เพิ่ม":"ลด"} <b>${fmt(Math.abs(dDay),1)} ตัน/วัน</b> · รายได้ <b class="${cls(dSeason,1,0.05)}">${sgn(dSeason,1)} ล้านบาท</b> ต่อฤดูหีบ`+(c.vhpDay>0.5?`<br><span style="font-size:.92rem">ผลิต VHP <b>${fmt(c.vhpDay,0)} ตัน/วัน</b> + ทรายดิบ <b>${fmt(c.rawDay,0)} ตัน/วัน</b></span>`:"")+
      (att.length?`<br><span style="color:var(--muted);font-size:.9rem">ที่มาของผลต่าง: ${att.map(a=>`${a[0]} <span class="${cls(a[1])}">${sgn(a[1],2)}</span>`).join(" · ")}</span>`:"");
   const ch=document.getElementById("chain");
   if(ch){
@@ -629,12 +816,12 @@ function render(){
       ch.innerHTML="<ol>"+chainItems(b,c).map(x=>{
         let score=0; const lines=x.ms.map(([l,bv,cv,g,d,u])=>{const dv=cv-bv,e=Math.pow(10,-d-1);
           if(Math.abs(dv)<e) return `<div class="m">${l}: ${fmt(cv,d)} ${u} (เท่าเดิม)</div>`;
-          score+=Math.sign(dv*g); return `<div class="m">${l}: ${fmt(bv,d)} → <b class="${cls(dv,g,e)}">${fmt(cv,d)}</b> ${u}</div>`;}).join("");
+          score+=Math.sign(dv*g); return `<div class="m">${l}: ${fmt(bv,d)} → <b class="${g===0?"zero":cls(dv,g,e)}">${fmt(cv,d)}</b> ${u}</div>`;}).join("");
         return `<li class="${score>0?"up":score<0?"down":""}"><span class="dot"></span><div class="s">${x.s}</div>${lines}</li>`;
       }).join("")+"</ol>";
     }
   }
-  renderHero(b,c); renderRec();
+  renderHero(b,c); renderRec(); renderVhpSpec(c); drawLossFlow(b,c);
   drawImpact(c,b); drawTornado();
 }
 
@@ -652,9 +839,10 @@ const REC={
  rsrrise:{...RNG("rsrrise"),why:REAL},
  cpur:{...RNG("cpur"),why:REAL+" ต่ำกว่านี้แมสควิทหนืด ปั่นแยกยาก"},
  cmolrise:{...RNG("cmolrise"),why:REAL},
+ vhpPol:{lo:99.40,hi:99.8,why:"ทำ Pol ให้ถึงสเปค VHP พอดี (≥ 99.40) ล้างเกินสเปคเสียน้ำตาลเปล่า"},
  und:{lo:7.4,hi:16,why:"เป้าหมายต่ำสุดเท่าฤดูที่ดีที่สุด (65/66 = 7.4% Pol)"}
 };
-const NOREC={crush:"ขึ้นกับอ้อยที่ส่งเข้าโรงงาน",polc:"ขึ้นกับคุณภาพอ้อยเข้า ปรับได้ที่ฝ่ายไร่และการรับอ้อย",fib:"ขึ้นกับพันธุ์และคุณภาพอ้อย",mjpur:"ขึ้นกับคุณภาพอ้อยเข้า (อ้อยไฟไหม้ อ้อยค้าง สิ่งปนเปื้อน)",cakepc:"ขึ้นกับสิ่งสกปรกในอ้อยเป็นหลัก",spol:"ควบคุมตามสเปคน้ำตาลที่ต้องส่ง"};
+const NOREC={crush:"ขึ้นกับอ้อยที่ส่งเข้าโรงงาน",polc:"ขึ้นกับคุณภาพอ้อยเข้า ปรับได้ที่ฝ่ายไร่และการรับอ้อย",fib:"ขึ้นกับพันธุ์และคุณภาพอ้อย",mjpur:"ขึ้นกับคุณภาพอ้อยเข้า (อ้อยไฟไหม้ อ้อยค้าง สิ่งปนเปื้อน)",cakepc:"ขึ้นกับสิ่งสกปรกในอ้อยเป็นหลัก",spol:"ควบคุมตามสเปคน้ำตาลที่ต้องส่ง",vhpTons:"เป็นการตัดสินใจตามแผนขาย/สัญญา ดูผลต่อรายได้ด้านบน",vhpDiss:"ลดได้ด้วยการควบคุมน้ำล้าง (อุณหภูมิ ปริมาณ จังหวะ) และขนาดผลึกที่สม่ำเสมอ",vhpLoss:"ลดได้ด้วยการเคี่ยว Run-off ให้เร็ว ไม่ค้างในถังนาน",vhpEx:"เพิ่มได้ด้วยการคุม Brix/Purity แมสควิท VHP และขนาดผลึก (seed) ให้สม่ำเสมอ",vhpPrem:"ใส่ตามราคาตลาด/สัญญาขาย"};
 const PMAP=Object.fromEntries(ALL.map(p=>[p.k,p]));
 const pos=(p,v)=>(v-p.min)/(p.max-p.min)*100;
 function bestFor(k,state){
@@ -696,11 +884,65 @@ function renderRec(){
 }
 document.getElementById("applyAll").onclick=()=>{if(window.__opt){cur={...cur,...window.__opt};buildDetail();}};
 
+
+const VQ={"65/66": {"smoist": 0.144, "scolor": 1225.0, "spolP90": 99.3}, "66/67": {"smoist": 0.116, "scolor": 1123.0, "spolP90": 99.33}, "67/68": {"smoist": 0.127, "scolor": 1179.0, "spolP90": 99.24}, "68/69": {"smoist": 0.104, "scolor": 895.0, "spolP90": 99.38}, "ALL": {"smoist": 0.121, "scolor": 1099.0, "spolP90": 99.35}};
+function renderVhpSpec(c){
+  const el=document.getElementById("vhpSpec"); if(!el) return;
+  const q=VQ[SEASON]||VQ.ALL;
+  const rowS=(l,act,spec,ok,note)=>`<tr><td>${l}</td><td>${act}</td><td>${spec}</td><td class="${ok?"okc":"bad"}">${ok?"✓ ผ่าน":"✕ ยังไม่ผ่าน"}</td></tr>${note&&!ok?`<tr class="nt"><td colspan="4">${note}</td></tr>`:""}`;
+  el.innerHTML=`<div class="vs-h">ตรวจสเปค VHP เทียบคุณภาพน้ำตาลจริง ${SEASON==="ALL"?"เฉลี่ย 4 ฤดู":"ฤดู "+SEASON}</div>
+   <table><tr><th>รายการ</th><th>ค่าจริง/เป้า</th><th>สเปคอ้างอิง</th><th></th></tr>
+   ${rowS("Pol เป้าหมาย VHP",fmt(c.Sv,2)+"%","≥ 99.40%",c.Sv>=99.4,"ตั้ง Pol เป้าหมายอย่างน้อย 99.40")}
+   <tr><td>Pol ทรายดิบ (อ้างอิง P90)</td><td>${fmt(q.spolP90,2)}%</td><td>–</td><td style="color:#555">สายแยก</td></tr><tr class="nt"><td colspan="4" style="color:#555">สาย VHP แยกหม้อเคี่ยว/หม้อปั่น จึงต้องทำ Pol ถึงสเปคที่หม้อปั่น VHP เอง ไม่กระทบ Pol ทรายดิบ</td></tr>
+   ${rowS("ความชื้น (เฉลี่ย)",fmt(q.smoist,3)+"%","≤ 0.10%",q.smoist<=0.10,"ต้องอบแห้ง/ทำเย็นน้ำตาลให้ดีขึ้น")}
+   ${rowS("สี (เฉลี่ย)",fmt(q.scolor,0)+" IU","≤ 1,500 IU",q.scolor<=1500,"")}
+   </table><div class="vs-n">สเปคอ้างอิงทั่วไป ควรตรวจกับสัญญาขายจริง</div>`;
+}
+
+function drawLossFlow(b,c){
+  const box=document.getElementById("waffle"); if(!box) return;
+  const tpd=x=>x/100*cur.polc/100*cur.crush;
+  const v=c.vhpShare/100;
+  const rawC=(c.or+c.lvhp)*(1-v), vhpC=c.or-rawC;
+  const items=[
+    {k:"raw",n:"ได้เป็นน้ำตาลทรายดิบ",col:"#2E86DE",v:rawC,good:true},
+    {k:"vhp",n:"ได้เป็นน้ำตาล VHP",col:"#1E9E5A",v:vhpC,good:true},
+    {k:"bag",n:"หายไปกับชานอ้อย",st:"ขั้นที่ 2 · หีบสกัด",ic:"mill",col:"#8C9A2E",v:c.lbag,bv:b.lbag,tip:"ลดความชื้นชาน เพิ่ม PI และ Imbibition"},
+    {k:"clar",n:"หายไปกับกากตะกอน",st:"ขั้นที่ 3 · ทำใส",ic:"clar",col:"#6B4F2A",v:c.lcake+c.lsand,bv:b.lcake+b.lsand,tip:"ลด Pol ใน Filter cake ด้วยน้ำล้างหม้อกรอง"},
+    {k:"mol",n:"ค้างอยู่ในกากน้ำตาล",st:"ขั้นที่ 5 · เคี่ยว",ic:"pan",col:"#C0782B",v:c.lmol,bv:b.lmol,tip:"ลด Purity กากน้ำตาล คุม pH Limed Juice และ Purity C-Mass"},
+    {k:"und",n:"หายไม่ทราบสาเหตุ",st:"ทั่วทั้งกระบวนการ",ic:"cent",col:"#D64545",v:c.lund,bv:b.lund,tip:"ลดจุลินทรีย์ รอยรั่ว น้ำตาลใน condensate และการแตกตัวในหม้อระเหย"},
+    {k:"run",n:"หายระหว่างหมุนเวียน VHP",st:"VHP 2 · ปั่น VHP",ic:"vcent",col:"#E8B84A",v:c.lvhp,bv:b.lvhp,tip:"เคี่ยว Run-off ให้เร็ว ทำ Pol ให้ถึงสเปคพอดี"}
+  ].filter(x=>x.good? x.v>0.005 : (x.k!=="run"||cur.vhpTons>0));
+  // largest remainder to 100 cells
+  const tot=items.reduce((a,x)=>a+x.v,0);
+  items.forEach(x=>{x.raw=x.v/tot*100;x.cells=Math.floor(x.raw);x.rem=x.raw-x.cells;});
+  let left=100-items.reduce((a,x)=>a+x.cells,0);
+  [...items].sort((a,b)=>b.rem-a.rem).slice(0,left).forEach(x=>x.cells++);
+  let cells=[]; items.forEach(x=>{for(let i=0;i<x.cells;i++)cells.push(x);});
+  box.innerHTML=cells.map((x,i)=>`<i style="background:${x.col}" title="${x.n} ${fmt(x.v,2)} กก."${i>=cells.length-0?'':''}></i>`).join("");
+  const lossTot=items.filter(x=>!x.good).reduce((a,x)=>a+x.v,0), lossB=b.lbag+b.lcake+b.lsand+b.lmol+b.lund+b.lvhp, gotB=100-lossB;
+  const got=100-lossTot, dg=got-gotB;
+  document.getElementById("lcTop").innerHTML=`
+    <div class="lt got"><div class="lt-l">ได้เป็นน้ำตาล</div><div class="lt-v">${fmt(got,1)}<span> กก.</span></div><div class="lt-s">${Math.abs(dg)>0.005?`<b class="${dg>0?"pos":"neg"}">${sgn(dg,2)} กก.</b> เทียบฐาน`:"เท่ากับค่าฐาน"}</div></div>
+    <div class="lt-bar"><div class="lt-fill" style="width:${got}%"></div><div class="lt-txt">จากทุก 100 กก.</div></div>
+    <div class="lt lost"><div class="lt-l">หายไประหว่างผลิต</div><div class="lt-v">${fmt(lossTot,1)}<span> กก.</span></div><div class="lt-s">≈ ${fmt(tpd(lossTot),0)} ตัน Pol/วัน</div></div>`;
+  document.getElementById("wlegend").innerHTML=items.filter(x=>x.good).map(x=>`<span><i style="background:${x.col}"></i>${x.n} ${fmt(x.v,1)} กก.</span>`).join("")+`<span><i class="lossSw"></i>ช่องสีอื่น = ส่วนที่หายไป (ดูรายการด้านขวา)</span>`;
+  const losses=items.filter(x=>!x.good), mx=Math.max(...losses.map(x=>x.v));
+  document.getElementById("lossList").innerHTML=losses.map(x=>{const d=x.v-(x.bv||0);
+    return `<div class="li" style="--c:${x.col}">
+      <div class="li-ic">${ICON[x.ic]}</div>
+      <div class="li-b">
+        <div class="li-t"><span class="sw"></span>${x.n}<span class="li-st">${x.st}</span></div>
+        <div class="li-row"><div class="li-v">${fmt(x.v,2)}<small> กก.</small></div><div class="li-bar"><i style="width:${Math.max(1.5,x.v/mx*100)}%"></i></div></div>
+        <div class="li-s">≈ ${fmt(tpd(x.v),1)} ตัน Pol/วัน${Math.abs(d)>0.0005?` · <b class="${d<0?"pos":"neg"}">${sgn(d,2)} กก.</b>`:""}</div>
+        <div class="li-tip">💡 ${x.tip}</div>
+      </div></div>`}).join("");
+}
 function renderHero(b,c){
   const dy=c.yieldKg-b.yieldKg, pl=document.getElementById("ykd");
   pl.className="pill "+cls(dy,1,0.005); pl.textContent=Math.abs(dy)<0.005?"เท่ากับค่าฐาน":(dy>0?"▲ ":"▼ ")+fmt(Math.abs(dy),2)+" kg/tc";
   const chip=(l,v,dv,d,u,g=1)=>`<div class="chip"><div class="l">${l}</div><div><span class="v">${v}</span><span class="d ${cls(dv,g,Math.pow(10,-d-1))}">${Math.abs(dv)<Math.pow(10,-d-1)?"":sgn(dv,d)}</span></div></div>`;
-  const dDay=c.sugarDay-b.sugarDay, dS=dDay*cur.days*cur.price/1e6;
+  const dDay=c.sugarDay-b.sugarDay, dS=(c.revDay-b.revDay)*cur.days/1e6;
   document.getElementById("chips").innerHTML=
     chip("สกัดน้ำตาลได้ (Extraction)",fmt(c.ext,2)+"%",c.ext-b.ext,2)+
     chip("กู้คืนในห้องต้ม (BHR)",fmt(c.bhr,2)+"%",c.bhr-b.bhr,2)+
@@ -723,12 +965,13 @@ function drawImpact(c,b){
   h+=`<tr class="stage"><td colspan="4">ระเหย</td></tr>`+row("Purity น้ำเชื่อม (J)","%",b.J,c.J,1)+row("สูญเสียไม่ทราบสาเหตุ","% Pol",b.lund,c.lund,-1);
   h+=`<tr class="stage"><td colspan="4">เคี่ยว / ตกผลึก</td></tr>`+row("Purity กากน้ำตาล (M)","%",b.M,c.M,-1)+row("S.J.M.","%",b.sjm,c.sjm,1)+row("สูญเสียในกากน้ำตาล","% Pol",b.lmol,c.lmol,-1);
   h+=`<tr class="stage"><td colspan="4">ปั่นแยก และผลรวม</td></tr>`+row("Pol น้ำตาล (S)","%",b.S,c.S,1)+row("BHR","%",b.bhr,c.bhr,1)+row("Overall Recovery","%",b.or,c.or,1)+row("Yield","kg/ตันอ้อย",b.yieldKg,c.yieldKg,1);
+  h+=`<tr class="stage"><td colspan="4">ผลิต VHP</td></tr>`+row("น้ำตาล VHP","ตัน/วัน",b.vhpDay,c.vhpDay,0,0)+row("สัดส่วน VHP","% ของน้ำตาล",b.vhpShare,c.vhpShare,0,1)+row("น้ำตาลทรายดิบ","ตัน/วัน",b.rawDay,c.rawDay,0,0)+row("หมุนเวียนเพิ่ม","% ของ VHP",b.vhpRecircPct,c.vhpRecircPct,-1,1)+row("Pol หมุนเวียนกลับสายดิบ","ตัน/วัน",b.rawLoad,c.rawLoad,-1,0)+row("Exhaustion A สายดิบ (จริง)","%",b.aex,c.aex,0,1)+row("สูญเสียจากการหมุนเวียน","% Pol",b.lvhp,c.lvhp,-1,3)+row("รายได้","ล้านบาท/วัน",b.revDay/1e6,c.revDay/1e6,1,3);
   document.getElementById("impact").innerHTML=h;
 }
 function drawTornado(){
   const svg=document.getElementById("tornado"), css=getComputedStyle(document.documentElement), C=n=>css.getPropertyValue(n).trim();
   const y0=model(cur).yieldKg;
-  const items=ALL.filter(p=>!["crush","price","days"].includes(p.k)).map(p=>{
+  const items=ALL.filter(p=>!["crush","price","days","vhpPrem","vhpTons"].includes(p.k)).map(p=>{
     const span=(p.max-p.min)*0.15, lo={...cur}, hi={...cur};
     lo[p.k]=clamp(cur[p.k]-span,p.min,p.max); hi[p.k]=clamp(cur[p.k]+span,p.min,p.max);
     if(p.k==="mills"){lo.mills=clamp(Math.round(cur.mills-1),4,6);hi.mills=clamp(Math.round(cur.mills+1),4,6);}
@@ -747,11 +990,11 @@ function drawTornado(){
   svg.innerHTML=s;
 }
 document.getElementById("setBase").onclick=()=>{base={...cur};render();};
-document.getElementById("resetAll").onclick=()=>{DEF=makeDef();cur={...DEF};base={...DEF};buildDetail();};
-function setSeason(y){window.__price=cur.price;SEASON=y;SB=DATA.seasons[y];DEF=makeDef();cur={...DEF};base={...DEF};buildDetail();renderSeasonTable();}
+document.getElementById("resetAll").onclick=()=>{DEF=makeDef();cur={...DEF};base={...DEF,vhpTons:0};buildDetail();};
+function setSeason(y){window.__price=cur.price;SEASON=y;SB=DATA.seasons[y];DEF=makeDef();cur={...DEF};base={...DEF,vhpTons:0};buildDetail();renderSeasonTable();}
 document.getElementById("season").onchange=e=>setSeason(e.target.value);
 function renderSeasonTable(){
-  const ys=["65/66","66/67","67/68","68/69","69/70"];
+  const ys=["65/66","66/67","67/68","68/69"];
   const r=(l,f,d=2)=>`<tr><td>${l}</td>${ys.map(y=>`<td class="${y===SEASON?"sel":""}">${f(DATA.seasons[y])}</td>`).join("")}</tr>`;
   const n=(x,d=2)=>x==null?"–":fmt(x,d);
   document.getElementById("seasonTbl").innerHTML=`<tr><th>ตัวชี้วัด (ค่าเฉลี่ยรายวัน)</th>${ys.map(y=>`<th class="${y===SEASON?"sel":""}">${y}</th>`).join("")}</tr>`+
