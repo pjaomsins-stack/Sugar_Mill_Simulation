@@ -390,6 +390,23 @@ summary{font-family:var(--display);font-weight:500}
 .li-bar i{display:block;height:100%;background:var(--c);border-radius:999px;transition:width .3s}
 .li-s{font-size:.78rem;color:#333}.li-s .pos{color:#2F7D46}.li-s .neg{color:#C23B3B}
 .li-tip{font-size:.76rem;color:#555;margin-top:3px}
+
+.modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));background:rgba(3,10,25,.62);backdrop-filter:blur(6px)}
+.modal.open{display:flex;animation:mfade .18s ease}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal-box{width:min(1180px,100%);max-height:100%;overflow:auto;border-radius:22px;background:var(--bg);box-shadow:0 30px 80px -20px rgba(0,0,0,.7);animation:mpop .2s ease}
+@keyframes mpop{from{transform:translateY(16px) scale(.98)}to{transform:none}}
+.modal-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:14px;padding:12px 18px;background:linear-gradient(135deg,#0A2558,#1E6FD0);color:#fff;border-bottom:3px solid #0396DB}
+.mb-t{font-family:var(--display);font-weight:600;font-size:1.1rem;flex:1}
+.mb-y{display:flex;align-items:center;gap:8px;font-size:.88rem;color:#C8DCF7}
+.mb-y b{font-family:var(--display);font-size:1.2rem;color:#fff}
+.mb-y .pill.pos{background:rgba(110,220,150,.2);color:#9FF0BE}.mb-y .pill.neg{background:rgba(255,120,120,.2);color:#FFB8B8}.mb-y .pill.zero{background:rgba(255,255,255,.14);color:#D5E4F8}
+.mclose{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:1.05rem;cursor:pointer}
+.mclose:hover{background:rgba(255,255,255,.25)}
+.mclose:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.modal .detail{border-radius:0 0 22px 22px;margin:0;box-shadow:none;border:0}
+@media (max-width:600px){.modal{padding:0}.modal-box{border-radius:0;height:100%}.mb-y span:first-child{display:none}}
+@media (prefers-reduced-motion: reduce){.modal.open,.modal-box{animation:none}}
 </style>
 </head>
 <body>
@@ -435,7 +452,7 @@ summary{font-family:var(--display);font-weight:500}
   </header>
 
   <nav class="line" id="line" aria-label="ขั้นตอนการผลิต"></nav>
-  <p class="legend">ความหนาของท่อสีฟ้า = ปริมาณน้ำตาล (Pol) ที่ไหลต่อไป · ตัวเลขสีแดงใต้แต่ละขั้น = น้ำตาลที่สูญเสียในขั้นนั้น · สีเขียว/แดง = ดีขึ้น/แย่ลงเทียบค่าฐาน</p>
+  <p class="legend"><b style="color:#8FE3B0">👆 คลิกการ์ดแต่ละ process เพื่อปรับค่าพารามิเตอร์</b> · ความหนาของท่อสีฟ้า = ปริมาณน้ำตาล (Pol) ที่ไหลต่อไป · ตัวเลขสีแดงใต้แต่ละขั้น = น้ำตาลที่สูญเสียในขั้นนั้น · สีเขียว/แดง = ดีขึ้น/แย่ลงเทียบค่าฐาน</p>
 
   <section class="lossCard">
     <div class="lc-head"><h2>น้ำตาลในอ้อยหายไปไหนบ้าง</h2><div class="lc-sub">คิดจากน้ำตาล (Pol) ในอ้อยทุก 100 กก. · 1 ช่อง = 1 กก.</div></div>
@@ -446,7 +463,16 @@ summary{font-family:var(--display);font-weight:500}
     </div>
   </section>
 
-  <section class="detail" id="detail"></section>
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+      <div class="modal-bar">
+        <div class="mb-t" id="mTitle">ปรับพารามิเตอร์</div>
+        <div class="mb-y"><span>Yield</span><b id="mYield">–</b><span class="pill" id="mYieldD"></span></div>
+        <button class="mclose" id="mClose" aria-label="ปิด">✕</button>
+      </div>
+      <section class="detail" id="detail"></section>
+    </div>
+  </div>
 
   <section class="dataCard">
     <h2>ข้อมูลจริงรายฤดู โรงงานน้ำตาลสีคิ้ว</h2>
@@ -706,7 +732,7 @@ function buildLine(){
   // total
   place(`<div class="card final" role="group" aria-label="ผลลัพธ์รวม">${ICON.total}<div class="no">ผลลัพธ์รวม</div><div class="nm">น้ำตาลที่ได้ทั้งหมด</div>
     <div class="km">Yield</div><div class="kv" id="kv-final"></div><div class="kd" id="kd-final"></div><div class="tot" id="tot-split"></div><div class="ls" style="color:var(--muted)" id="ls-final"></div></div>`,"17","1 / 4","st");
-  line.querySelectorAll("button.card").forEach(b=>b.onclick=()=>{activeTab=b.id.slice(5);buildLine();buildDetail();});
+  line.querySelectorAll("button.card").forEach(b=>b.onclick=()=>{activeTab=b.id.slice(5);buildLine();buildDetail();openModal();});
   render();
 }
 
@@ -821,6 +847,7 @@ function render(){
       }).join("")+"</ol>";
     }
   }
+  {const my=document.getElementById("mYield"); if(my){my.textContent=fmt(c.yieldKg,2)+" kg/tc"; const md=document.getElementById("mYieldD"), dd=c.yieldKg-b.yieldKg; md.className="pill "+cls(dd,1,0.005); md.textContent=Math.abs(dd)<0.005?"เท่ากับฐาน":(dd>0?"▲ ":"▼ ")+fmt(Math.abs(dd),2);}}
   renderHero(b,c); renderRec(); renderVhpSpec(c); drawLossFlow(b,c);
   drawImpact(c,b); drawTornado();
 }
@@ -938,6 +965,15 @@ function drawLossFlow(b,c){
         <div class="li-tip">💡 ${x.tip}</div>
       </div></div>`}).join("");
 }
+
+function openModal(){const m=document.getElementById("modal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  const s=STAGES.find(x=>x.id===activeTab);document.getElementById("mTitle").textContent=(s.no||("ขั้นที่ "+STAGES.indexOf(s)))+" · "+s.short;
+  m.querySelector(".modal-box").scrollTop=0; setTimeout(()=>document.getElementById("mClose").focus(),30);}
+function closeModal(){const m=document.getElementById("modal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";
+  const c=document.getElementById("card-"+activeTab); if(c) c.focus({preventScroll:true});}
+document.getElementById("mClose").onclick=closeModal;
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("modal").classList.contains("open"))closeModal();});
 function renderHero(b,c){
   const dy=c.yieldKg-b.yieldKg, pl=document.getElementById("ykd");
   pl.className="pill "+cls(dy,1,0.005); pl.textContent=Math.abs(dy)<0.005?"เท่ากับค่าฐาน":(dy>0?"▲ ":"▼ ")+fmt(Math.abs(dy),2)+" kg/tc";
