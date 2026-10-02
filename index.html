@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>จำลองกระบวนการหีบอ้อย → Yield น้ำตาล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Prompt:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06122A; --panel:#0E2246; --ink:#EAF2FD; --muted:#9FB6D6; --line:#1F3C6B;
+  --cane:#6DB37A; --cane2:#4E8A55; --juice:#E8B84A; --juice2:#8C6A22; --mol:#C98450; --steel:#8AA6C4; --steel2:#2B4A6B;
+  --loss:#FF7A7A; --gain:#6CD49A; --accent:#7FB6F0; --brand:#4DA3F0; --navy:#0A2247; --sugar:#F1F5FA;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#06122A; --panel:#0E2246; --ink:#EAF2FD; --muted:#9FB6D6; --line:#1F3C6B;
+    --cane:#6DB37A; --cane2:#4E8A55; --juice:#E8B84A; --juice2:#8C6A22; --mol:#C98450; --steel:#8AA6C4; --steel2:#2B4A6B;
+    --loss:#E26B6B; --gain:#6CC48A; --accent:#7FB6F0; --brand:#4DA3F0; --navy:#0A2247; --sugar:#F1F5FA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#06122A; --panel:#0E2246; --ink:#EAF2FD; --muted:#9FB6D6; --line:#1F3C6B;
+  --cane:#6DB37A; --cane2:#4E8A55; --juice:#E8B84A; --juice2:#8C6A22; --mol:#C98450; --steel:#8AA6C4; --steel2:#2B4A6B;
+  --loss:#E26B6B; --gain:#6CC48A; --accent:#7FB6F0; --brand:#4DA3F0; --navy:#0A2247; --sugar:#F1F5FA;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#06122A;color-scheme:dark;min-height:100%}
+body{min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",Tahoma,"Leelawadee UI",sans-serif;font-size:15px;line-height:1.6;font-variant-numeric:tabular-nums}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:0;line-height:1.3;color:var(--accent)}
+.sub{color:var(--muted);margin:4px 0 16px;max-width:70ch}
+.pos{color:var(--gain)} .neg{color:var(--loss)} .zero{color:var(--muted)}
+
+/* result banner */
+.result{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:linear-gradient(120deg,var(--navy),var(--accent));color:#fff;border:0;border-radius:14px;padding:14px 18px;margin-bottom:16px}
+@media (max-width:760px){.result{grid-template-columns:1fr}}
+.result .big{font-size:2.6rem;font-weight:700;line-height:1}
+.result .unit{color:#BFD6F2;font-size:.9rem}
+.result .say{font-size:1.05rem}
+.result .say b{font-weight:700}.result .pos{color:#8FE3B0}.result .neg{color:#FFB0B0}.result [style*="--muted"]{color:#BFD6F2!important}.result .btn{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff}.result .btn.primary{background:#fff;color:var(--navy);border-color:#fff}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:.88rem;padding:7px 12px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* process line */
+.line{display:flex;gap:0;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x proximity}
+.st{flex:1 1 0;min-width:128px;scroll-snap-align:start;display:flex;align-items:stretch}
+.card{flex:1;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:8px 8px 10px;cursor:pointer;text-align:center;font:inherit;color:inherit;display:flex;flex-direction:column;gap:2px}
+.card:hover{border-color:var(--brand)}
+.card[aria-pressed="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,var(--panel));box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
+.card:focus-visible,.btn:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card svg{width:100%;height:auto;max-height:96px}
+.card .no{font-size:.75rem;color:var(--muted)}
+.card .nm{font-weight:700;font-size:.98rem;line-height:1.25}
+.card .km{font-size:.8rem;color:var(--muted);margin-top:4px}
+.card .kv{font-weight:700;font-size:1.05rem}
+.card .kd{font-size:.82rem;font-weight:600;min-height:1.2em}
+.card .ls{margin-top:auto;font-size:.78rem;color:var(--loss)}
+.card.final{border-color:var(--navy);background:var(--navy);color:#fff}.card.final .no,.card.final .km,.card.final #ls-final{color:#BFD6F2!important}.card.final .pos{color:#8FE3B0}.card.final .neg{color:#FF9C9C}
+.pipe{flex:0 0 14px;display:flex;align-items:center;justify-content:center}
+.pipe span{display:block;width:100%;background:var(--brand);border-radius:3px;opacity:.85}
+.legend{font-size:.82rem;color:var(--muted);margin:0 0 14px}
+
+/* detail panel */
+.detail{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+@media (max-width:860px){.detail{grid-template-columns:1fr}}
+.detail h2{font-size:1.2rem;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.detail h2 svg{width:64px;height:auto}
+.what{color:var(--muted);margin:0 0 12px}
+.prm{margin:0 0 14px}
+.prm .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.prm label{font-weight:600}
+.prm .val{font-weight:700}
+.prm .base{font-size:.8rem;color:var(--muted)}
+.prm .hint{font-size:.85rem;color:var(--muted);margin-top:2px}
+.rng{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.chain h3{font-size:1rem;margin:0 0 8px}
+.chain ol{list-style:none;margin:0;padding:0;position:relative}
+.chain li{position:relative;padding:0 0 12px 28px}
+.chain li::before{content:"";position:absolute;left:8px;top:22px;bottom:0;width:2px;background:var(--line)}
+.chain li:last-child::before{display:none}
+.chain .dot{position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);background:var(--panel)}
+.chain li.up .dot{border-color:var(--gain);background:color-mix(in srgb,var(--gain) 25%,var(--panel))}
+.chain li.down .dot{border-color:var(--loss);background:color-mix(in srgb,var(--loss) 25%,var(--panel))}
+.chain .s{font-weight:600}
+.chain .m{font-size:.88rem;color:var(--muted)}
+.empty{color:var(--muted);font-size:.92rem;border:1px dashed var(--line);border-radius:10px;padding:14px}
+
+details{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+summary{cursor:pointer;font-weight:600}
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+@media (max-width:860px){.tech{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{padding:4px 6px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:500}
+tr.stage td{font-weight:700;padding-top:10px;color:var(--accent);border-bottom:none}
+.box{overflow-x:auto}
+.note{font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.spin{transform-origin:center;transform-box:fill-box;animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== modern refresh ===== */
+:root{--r-lg:22px;--r-md:16px;--shadow:0 1px 2px rgba(13,47,102,.06),0 8px 24px -8px rgba(13,47,102,.16);--display:"Prompt","IBM Plex Sans Thai",Tahoma,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -10px rgba(0,0,0,.6)}}
+body{background:radial-gradient(1200px 600px at 10% -10%,color-mix(in srgb,var(--brand) 14%,transparent),transparent 60%),var(--bg);background-attachment:fixed}
+.wrap{padding-top:18px}
+.hero{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:22px 24px 18px;margin-bottom:18px;color:#fff;
+  background:linear-gradient(135deg,#0A2558 0%,#123F8C 55%,#1E6FD0 100%);box-shadow:var(--shadow)}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none}
+.hero::after{content:"";position:absolute;width:420px;height:420px;right:-120px;top:-180px;border-radius:50%;background:radial-gradient(closest-side,rgba(120,190,255,.45),transparent);pointer-events:none}
+.hero>*{position:relative}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.hero h1{font-family:var(--display);font-weight:600;font-size:1.65rem;letter-spacing:-.01em;color:#fff;margin:0}
+.hero .sub{color:#C8DCF7;margin:2px 0 0}
+.hero .btn{border-radius:999px;padding:8px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);color:#fff;backdrop-filter:blur(6px)}
+.hero .btn:hover{background:rgba(255,255,255,.2)}
+.hero .btn.primary{background:#fff;color:#0D2F66;border-color:#fff;font-weight:600}
+.hero-grid{display:grid;grid-template-columns:auto 1fr 120px;gap:24px;align-items:center;margin-top:16px}
+@media (max-width:760px){.hero-grid{grid-template-columns:1fr auto}.hero-grid .say{grid-column:1/-1;grid-row:2}}
+.ylab{font-size:.85rem;color:#C8DCF7}
+.yrow{display:flex;align-items:baseline;gap:8px}
+.hero .big{font-family:var(--display);font-size:3.4rem;font-weight:600;line-height:1.05;letter-spacing:-.02em}
+.hero .unit{color:#C8DCF7;font-size:.9rem;white-space:nowrap}
+@media (max-width:420px){.hero .big{font-size:2.8rem}.yrow{flex-wrap:wrap;gap:0 8px}}
+.hero .say{font-size:1rem;line-height:1.65;color:#E6F0FC;max-width:62ch}
+.hero .say b{color:#fff}
+.hero .say .pos{color:#8FE3B0}.hero .say .neg{color:#FFB0B0}
+.hero [style*="--muted"]{color:#BCD3F2!important}
+.gauge svg{width:120px;height:120px;display:block}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:.82rem;font-weight:600;line-height:1.6}
+.pill:empty{display:none}
+.hero .pill.pos{background:rgba(110,220,150,.18);color:#9FF0BE}
+.hero .pill.neg{background:rgba(255,120,120,.18);color:#FFB8B8}
+.hero .pill.zero{background:rgba(255,255,255,.12);color:#D5E4F8}
+.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+@media (max-width:760px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--r-md);padding:10px 14px;backdrop-filter:blur(6px)}
+.chip .l{font-size:.78rem;color:#BCD3F2}
+.chip .v{font-family:var(--display);font-size:1.25rem;font-weight:600}
+.chip .d{font-size:.78rem;font-weight:600;margin-left:6px}
+.chip .d.pos{color:#9FF0BE}.chip .d.neg{color:#FFB8B8}.chip .d.zero{color:#BCD3F2}
+
+.line{gap:0;padding:6px 4px 14px}
+.card{border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow);padding:10px 10px 12px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s}
+.card:hover{transform:translateY(-2px);border-color:var(--brand)}
+.card[aria-pressed="true"]{border-color:var(--brand);background:var(--panel);box-shadow:0 0 0 2px var(--brand),var(--shadow)}
+.card svg{background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 9%,transparent),transparent);border-radius:12px;padding:4px}
+.card .no{display:inline-block;margin:4px auto 0;font-size:.72rem;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--brand) 12%,transparent);border-radius:999px;padding:0 9px}
+.card .nm{font-family:var(--display);font-weight:600}
+.card .kv{font-family:var(--display);font-weight:600;font-size:1.15rem}
+.card .kd{display:inline-block;margin:0 auto;border-radius:999px;padding:0 8px;font-size:.76rem}
+.card .kd:empty{padding:0}
+.card .kd.pos{background:color-mix(in srgb,var(--gain) 14%,transparent)}
+.card .kd.neg{background:color-mix(in srgb,var(--loss) 14%,transparent)}
+.card .ls{border-top:1px dashed var(--line);padding-top:6px;margin-top:auto}
+.card.final{background:linear-gradient(160deg,#0D2F66,#1B5FBF);border:0;color:#fff}
+.card.final svg{background:rgba(255,255,255,.1)}
+.card.final .no{background:rgba(255,255,255,.16);color:#fff}
+.card.final .kd.pos{background:rgba(110,220,150,.2);color:#9FF0BE}.card.final .kd.neg{background:rgba(255,120,120,.2);color:#FFB8B8}
+.pipe span{opacity:1;border-radius:999px;background:repeating-linear-gradient(90deg,var(--brand) 0 8px,color-mix(in srgb,var(--brand) 55%,#fff) 8px 14px);background-size:28px 100%;animation:flow 1.2s linear infinite}
+@keyframes flow{to{background-position:28px 0}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px}
+.detail,details{border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px 22px}
+.detail h2{font-family:var(--display);font-weight:600;font-size:1.25rem}
+.detail h2 svg{background:color-mix(in srgb,var(--brand) 10%,transparent);border-radius:12px;padding:4px;width:72px}
+.prm{background:color-mix(in srgb,var(--brand) 5%,var(--panel));border:1px solid var(--line);border-radius:14px;padding:10px 14px 10px;margin-bottom:10px}
+.prm .val{font-family:var(--display);font-weight:600;color:var(--accent);font-size:1.05rem}
+input[type=range]{-webkit-appearance:none;appearance:none;height:22px;background:transparent;margin:6px 0 2px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--brand) var(--p,50%),var(--line) var(--p,50%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:999px;background:var(--brand)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--brand);margin-top:-7px;box-shadow:0 2px 6px rgba(13,47,102,.3)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--brand)}
+.btn{border-radius:999px}
+.chain h3{font-family:var(--display);font-weight:600}
+.chain li{background:color-mix(in srgb,var(--brand) 4%,transparent);border-radius:12px;padding:8px 10px 8px 34px;margin-bottom:8px}
+.chain li::before{left:14px;top:30px;bottom:-10px}
+.chain .dot{left:6px;top:10px}
+.chain b.pos,.chain b.neg{border-radius:6px;padding:0 5px}
+.chain b.pos{background:color-mix(in srgb,var(--gain) 14%,transparent)}
+.chain b.neg{background:color-mix(in srgb,var(--loss) 14%,transparent)}
+summary{font-family:var(--display);font-weight:500}
+@media (prefers-reduced-motion: reduce){.pipe span{animation:none}.card:hover{transform:none}}
+
+/* ===== white surfaces on dark page ===== */
+.card:not(.final),.prm,.chain li{
+  --ink:#000000; --muted:#333333; --line:#D5E3F3; --panel:#FFFFFF;
+  --steel:#6F8AA6; --steel2:#D3E3F3; --accent:#1B4F9C; --brand:#2E86DE;
+  --gain:#2F7D46; --loss:#C23B3B; --cane:#3E7C4A; --cane2:#8DBF6A;
+  --juice:#D49A1E; --juice2:#F3D27A; --mol:#7A421A; --sugar:#FFFFFF;
+  background:#FFFFFF; color:var(--ink); border-color:#D5E3F3;
+}
+.chain li{box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.prm{box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.card:not(.final)[aria-pressed="true"]{background:#F2F8FF}
+
+.trk{position:relative}
+.trk .band{position:absolute;top:50%;height:16px;transform:translateY(-50%);background:color-mix(in srgb,var(--gain) 16%,transparent);border-radius:999px;pointer-events:none}
+.trk .mark{position:absolute;top:50%;width:4px;height:22px;margin-left:-2px;transform:translateY(-50%);background:var(--gain);border-radius:2px;pointer-events:none;transition:left .2s}
+.trk input{position:relative}
+.rec{margin-top:8px;padding:8px 10px;border-radius:10px;background:#F1FAF4;border:1px solid #CDEBD6;font-size:.86rem}
+.rec.muted{background:#F4F7FB;border-color:var(--line);color:var(--muted)}
+.rec .rt{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rec .rt>span:first-child{flex:1}
+.rec .rt b{color:var(--gain);font-size:1rem}
+.rec .g{font-weight:600}
+.rec .ok{color:var(--gain);font-weight:600}
+.rec .rw{color:var(--muted);font-size:.8rem;margin-top:2px}
+.btn.mini{padding:3px 12px;font-size:.8rem;background:var(--gain);border-color:var(--gain);color:#fff}
+.potential{font-size:.76rem;margin-top:6px;padding:3px 6px;border-radius:8px;background:#F1FAF4;color:#2F7D46;min-height:1.5em}
+.potential:empty{background:transparent}
+.potential .okc{color:var(--muted)}
+.hero .btn.rec-all{background:#2FB36D;border-color:#2FB36D;font-weight:600}
+.hero .btn.rec-all:hover{background:#28a060}
+
+.card:not(.final) .nm,.card:not(.final) .kv,.card:not(.final) .km,.card:not(.final) .no,
+.prm label,.prm .val,.prm .top,.prm .rng,.prm .base,.prm .hint,.rec,.rec .rw,.rec .rt>span:first-child,
+.chain li .s,.chain li .m{color:#000}
+.card:not(.final) .no{background:#E8EEF6}
+.prm .rng,.prm .base,.prm .hint,.rec .rw,.chain li .m{color:#333}
+
+.numbox{display:inline-flex;align-items:center;gap:0;border:1.5px solid #B9CDE6;border-radius:10px;background:#fff;overflow:hidden}
+.numbox:focus-within{border-color:#2E86DE;box-shadow:0 0 0 3px rgba(46,134,222,.2)}
+.numbox .num{width:84px;border:0;outline:0;background:transparent;font:inherit;font-family:var(--display);font-weight:600;font-size:1.05rem;color:#000;text-align:center;padding:3px 2px;-moz-appearance:textfield}
+.numbox .num::-webkit-outer-spin-button,.numbox .num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.stepb{border:0;background:#EEF4FB;color:#1B4F9C;font:inherit;font-weight:700;font-size:1.05rem;width:30px;height:32px;cursor:pointer}
+.stepb:hover{background:#DCE8F7}
+.stepb:focus-visible{outline:2px solid #2E86DE;outline-offset:-2px}
+.numbox .u{padding:0 10px 0 6px;color:#333;font-size:.85rem;white-space:nowrap;border-left:1px solid #D5E3F3;align-self:stretch;display:flex;align-items:center;background:#F7FAFD}
+.prm .top{align-items:center;flex-wrap:wrap}
+.numerr{font-size:.8rem;color:#C23B3B;min-height:0;text-align:right}
+.numerr:empty{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>จำลองกระบวนการหีบอ้อย</h1>
+        <p class="sub">เลือกขั้นตอน เลื่อนปรับค่า แล้วดูผลส่งต่อจนถึงน้ำตาลที่ได้</p>
+      </div>
+      <div class="btns">
+        <button class="btn rec-all" id="applyAll">ใช้ค่าแนะนำทั้งหมด <span id="allGain"></span></button>
+        <button class="btn primary" id="setBase">ใช้ค่าปัจจุบันเป็นฐาน</button>
+        <button class="btn" id="resetAll">คืนค่าทั้งหมด</button>
+      </div>
+    </div>
+    <div class="hero-grid" aria-live="polite">
+      <div class="yield">
+        <div class="ylab">Yield น้ำตาล</div>
+        <div class="yrow"><span class="big" id="yk">–</span><span class="unit">kg / ตันอ้อย</span></div>
+        <span class="pill" id="ykd"></span>
+      </div>
+      <div class="say" id="say"></div>
+      <div class="gauge"><svg viewBox="0 0 120 120" id="gauge" aria-label="Overall Recovery"></svg></div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </header>
+
+  <nav class="line" id="line" aria-label="ขั้นตอนการผลิต"></nav>
+  <p class="legend">ความหนาของท่อสีฟ้า = ปริมาณน้ำตาล (Pol) ที่ไหลต่อไป · ตัวเลขสีแดงใต้แต่ละขั้น = น้ำตาลที่สูญเสียในขั้นนั้น · สีเขียว/แดง = ดีขึ้น/แย่ลงเทียบค่าฐาน</p>
+
+  <section class="detail" id="detail"></section>
+
+  <details>
+    <summary>รายละเอียดเชิงเทคนิค: ตารางตัวชี้วัด และพารามิเตอร์ที่กระทบ Yield มากที่สุด</summary>
+    <div class="tech">
+      <div class="box"><table id="impact"></table></div>
+      <div>
+        <div class="box"><svg id="tornado" viewBox="0 0 640 400" role="img" aria-label="กราฟความไว" style="width:100%;height:auto;min-width:520px"></svg></div>
+        <p class="note">แต่ละแถบ = Yield เปลี่ยนเท่าไร (kg/ตันอ้อย) ถ้าปรับค่านั้นลง/ขึ้น 15% ของช่วงจากค่าปัจจุบัน</p>
+        <p class="note">แบบจำลอง: การสกัดใช้สูตร Reduced Extraction (Noël Deerr) · ห้องต้มใช้สูตร SJM: BHR = S(J−M)/J(S−M) · ค่าสัมประสิทธิ์เป็นค่าประมาณทั่วไป ควรสอบเทียบกับข้อมูลโรงงานจริง</p>
+      </div>
+    </div>
+  </details>
+</div>
+<script>
+
+const STAGES = [
+  {id:"cane", name:"0 อ้อยเข้า", short:"อ้อยเข้า", params:[
+    {k:"crush",l:"อัตราหีบ",u:"ตันอ้อย/วัน",min:5000,max:40000,step:500,d:20000,hint:"ใช้คำนวณตันน้ำตาลและรายได้"},
+    {k:"pol",l:"Pol ในอ้อย",u:"% อ้อย",min:10,max:16,step:0.1,d:13.0,hint:"ความหวานของอ้อยที่เข้าหีบ"},
+    {k:"fiber",l:"เส้นใย (Fiber)",u:"% อ้อย",min:10,max:17,step:0.1,d:13.0,hint:"เส้นใยสูงทำให้สกัดยากขึ้นและชานอ้อยพา Pol ออกมากขึ้น"},
+    {k:"purity",l:"ความบริสุทธิ์น้ำอ้อย",u:"%",min:78,max:90,step:0.1,d:85.0,hint:"Pol/Brix ของน้ำอ้อย"},
+    {k:"price",l:"ราคาน้ำตาล",u:"บาท/ตัน",min:10000,max:30000,step:500,d:18000},
+    {k:"days",l:"จำนวนวันหีบต่อฤดู",u:"วัน",min:60,max:180,step:5,d:120}
+  ]},
+  {id:"prep", name:"1 เตรียมอ้อย", short:"เตรียมอ้อย", params:[
+    {k:"pi",l:"Preparation Index (PI)",u:"%",min:75,max:95,step:0.5,d:88,hint:"ปรับจากระยะใบมีด/Shredder ยิ่งสูงเซลล์ยิ่งแตก สกัดง่ายขึ้น แต่เพิ่มขึ้นแบบผลตอบแทนลดลง"}
+  ]},
+  {id:"mill", name:"2 หีบสกัด", short:"หีบสกัด", params:[
+    {k:"imb",l:"น้ำอิมบิบิชั่น",u:"% เส้นใย",min:150,max:350,step:5,d:250,hint:"มากขึ้นสกัดได้ดีขึ้น แต่น้ำอ้อยจางลง ต้องระเหยน้ำมากขึ้น"},
+    {k:"mills",l:"จำนวนชุดลูกหีบ",u:"ชุด",min:4,max:6,step:1,d:5},
+    {k:"press",l:"แรงกดลูกหีบ",u:"% ของค่าออกแบบ",min:80,max:120,step:1,d:100,hint:"กดแรงขึ้น ชานแห้งขึ้น Pol ค้างในชานลดลง"}
+  ]},
+  {id:"clar", name:"3 ทำใสน้ำอ้อย", short:"ทำใส", params:[
+    {k:"ph",l:"pH หลังเติมปูน",u:"",min:6.6,max:8.4,step:0.05,d:7.6,hint:"ต่ำไป ซูโครสแตกตัว (Inversion) สูงไป น้ำตาลรีดิวซ์ถูกทำลาย สีเข้ม กากน้ำตาลหมดยากขึ้น"},
+    {k:"tclar",l:"อุณหภูมิอุ่นน้ำอ้อย",u:"°C",min:95,max:108,step:0.5,d:103,hint:"ต่ำกว่า 101 ตกตะกอนไม่ดี น้ำใสขุ่น"},
+    {k:"cakepol",l:"Pol ในกากตะกอน (Filter cake)",u:"%",min:0.8,max:4.0,step:0.1,d:2.0,hint:"ลดได้ด้วยน้ำล้างหน้าหม้อกรอง"},
+    {k:"cakepct",l:"ปริมาณกากตะกอน",u:"% อ้อย",min:2.0,max:5.0,step:0.1,d:3.5}
+  ]},
+  {id:"evap", name:"4 ระเหย", short:"ระเหย", params:[
+    {k:"sbrix",l:"Brix น้ำเชื่อม (Syrup)",u:"°Bx",min:55,max:70,step:0.5,d:64,hint:"ต่ำไปต้องเคี่ยวนาน ซูโครสแตกตัวในหม้อเคี่ยวมากขึ้น"},
+    {k:"tevap",l:"อุณหภูมิหม้อระเหยลูกแรก",u:"°C",min:110,max:128,step:0.5,d:118,hint:"ร้อนขึ้นระเหยเร็ว แต่ซูโครสแตกตัวมากขึ้น"}
+  ]},
+  {id:"pan", name:"5 เคี่ยว / ตกผลึก", short:"เคี่ยว", params:[
+    {k:"cpur",l:"Purity แมสควิท C",u:"%",min:52,max:64,step:0.5,d:58,hint:"ต่ำลงช่วยให้กากน้ำตาลหมดลึกขึ้น"},
+    {k:"cbrix",l:"Brix แมสควิท C",u:"°Bx",min:94,max:100,step:0.1,d:98},
+    {k:"cool",l:"เวลาทำเย็นใน Crystallizer",u:"ชม.",min:8,max:60,step:1,d:30,hint:"นานขึ้นซูโครสตกผลึกเพิ่ม กากน้ำตาลหมดลึกขึ้น"}
+  ]},
+  {id:"cent", name:"6 ปั่นแยก", short:"ปั่นแยก", params:[
+    {k:"wash",l:"เวลาฉีดน้ำล้างน้ำตาล A",u:"วินาที",min:0,max:15,step:0.5,d:5,hint:"มากขึ้น Pol น้ำตาลสูงขึ้น แต่ละลายผลึกกลับและเพิ่มการสูญเสียที่ไม่ทราบสาเหตุ"},
+    {k:"undet",l:"การสูญเสียไม่ทราบสาเหตุพื้นฐาน",u:"% Pol",min:0.2,max:1.5,step:0.05,d:0.6}
+  ]}
+];
+const ALL = STAGES.flatMap(s=>s.params.map(p=>({...p,stage:s.id})));
+const DEF = Object.fromEntries(ALL.map(p=>[p.k,p.d]));
+let cur = {...DEF}, base = {...DEF}, activeTab = "mill";
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+
+function model(p){
+  const r = {};
+  // 1-2 milling
+  const millF = {4:1.35,5:1.0,6:0.80}[p.mills];
+  const Ur = 4.0*Math.exp(-0.06*(p.pi-88))*Math.pow(p.imb/250,-0.4)*millF*Math.pow(p.press/100,-0.5);
+  r.rme = clamp(100-Ur,85,99.5);
+  const ff = p.fiber*87.5/(12.5*(100-p.fiber));
+  r.ext = clamp(100-(100-r.rme)*ff,80,99.5);
+  r.bagMoist = clamp(50+0.012*(p.imb-250)-15*(p.press/100-1),44,56);
+  const polBag = p.pol*(1-r.ext/100);
+  const brixBag = polBag/0.7;
+  r.bag = (p.fiber+brixBag)/(1-r.bagMoist/100);
+  r.bagPol = polBag/r.bag*100;
+  r.mj = 100 + p.imb*p.fiber/100 - r.bag;
+  const brixCane = p.pol/(p.purity/100);
+  r.mjBrix = brixCane*(r.ext/100)/r.mj*100;
+  r.mjPur = p.purity - 0.3 - 0.004*(p.imb-250);
+  // 3 clarification
+  r.invClar = 0.15 + 0.6*Math.pow(Math.max(0,7.0-p.ph),1.3) + 0.04*Math.max(0,p.tclar-103);
+  r.purRise = 0.7 - 0.6*Math.pow(p.ph-7.6,2) - (p.tclar<101?0.25*(101-p.tclar):0);
+  r.cjPur = r.mjPur + r.purRise;
+  const polMJ = p.pol*r.ext/100;
+  r.cakeLoss = p.cakepct*p.cakepol/100;            // pol % cane
+  r.invClarLoss = polMJ*r.invClar/100;
+  const polCJ = polMJ - r.cakeLoss - r.invClarLoss;
+  // 4 evaporation
+  r.invEvap = clamp(0.08+0.025*(p.tevap-115),0.02,1);
+  r.invPan = clamp(0.1+0.02*(65-p.sbrix),0.05,1);
+  const brixCJ = polCJ/(r.cjPur/100);
+  r.syrup = brixCJ/p.sbrix*100;
+  r.water = r.mj - r.cakeLoss*0 - r.syrup;
+  r.invEvapLoss = polCJ*(r.invEvap+r.invPan)/100;
+  const polBH = polCJ - r.invEvapLoss;
+  r.syrPur = r.cjPur*(1-(r.invEvap+r.invPan)/100);
+  // 5 pans
+  const clarPen = 0.8*Math.max(0,p.ph-8.0) + 0.3*Math.max(0,101-p.tclar);
+  r.M = clamp(36 + 0.55*(p.cpur-58) - 1.6*(p.cbrix-98) - 4.0*Math.log(p.cool/30) + clarPen, 28, 48);
+  // 6 centrifuge
+  r.S = 97.0 + 2.6*(1-Math.exp(-p.wash/6));
+  const J = r.syrPur, S=r.S, M=r.M;
+  r.bhr = S*(J-M)/(J*(S-M))*100;
+  r.undet = p.undet + 0.03*p.wash;
+  const polRecov = polBH*r.bhr/100;
+  r.molLoss = polBH - polRecov;
+  r.undetLoss = polRecov*r.undet/100;
+  const polSugar = polRecov - r.undetLoss;
+  r.yieldPct = polSugar/(S/100);
+  r.yieldKg = r.yieldPct*10;
+  r.or = polSugar/p.pol*100;
+  r.sugarDay = r.yieldPct/100*p.crush;
+  r.bagLoss = polBag;
+  r.flow = {cane:p.pol, mj:polMJ, cj:polCJ, bh:polBH, rec:polRecov, sugar:polSugar};
+  return r;
+}
+
+const ICON = {
+cane:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <g stroke="var(--cane)" stroke-width="4" stroke-linecap="round">
+  <line x1="8" y1="30" x2="94" y2="24"/><line x1="10" y1="37" x2="96" y2="31"/><line x1="6" y1="44" x2="92" y2="38"/><line x1="14" y1="23" x2="90" y2="18"/></g>
+ <g stroke="var(--cane2)" stroke-width="2"><line x1="40" y1="16" x2="40" y2="44"/><line x1="66" y1="14" x2="66" y2="42"/></g>
+ <rect x="8" y="44" width="86" height="22" rx="3" fill="var(--steel)"/>
+ <path d="M96 66V44h18l14 13v9z" fill="var(--accent)"/><path d="M101 48h11l9 8h-20z" fill="var(--steel2)"/>
+ <circle cx="28" cy="70" r="9" fill="var(--ink)"/><circle cx="72" cy="70" r="9" fill="var(--ink)"/><circle cx="114" cy="70" r="9" fill="var(--ink)"/>
+ <circle cx="28" cy="70" r="3" fill="var(--steel2)"/><circle cx="72" cy="70" r="3" fill="var(--steel2)"/><circle cx="114" cy="70" r="3" fill="var(--steel2)"/></svg>`,
+prep:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <g stroke="var(--cane)" stroke-width="5" stroke-linecap="round"><line x1="6" y1="40" x2="38" y2="40"/><line x1="10" y1="52" x2="38" y2="52"/></g>
+ <circle cx="70" cy="45" r="27" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <g class="spin"><g fill="var(--ink)">
+  <rect x="67" y="16" width="6" height="22" rx="2"/><rect x="67" y="52" width="6" height="22" rx="2"/>
+  <rect x="41" y="42" width="22" height="6" rx="2"/><rect x="77" y="42" width="22" height="6" rx="2"/>
+  <rect x="67" y="16" width="6" height="22" rx="2" transform="rotate(45 70 45)"/><rect x="67" y="52" width="6" height="22" rx="2" transform="rotate(45 70 45)"/>
+  <rect x="41" y="42" width="22" height="6" rx="2" transform="rotate(45 70 45)"/><rect x="77" y="42" width="22" height="6" rx="2" transform="rotate(45 70 45)"/></g>
+  <circle cx="70" cy="45" r="7" fill="var(--steel)"/></g>
+ <g fill="var(--cane2)"><rect x="104" y="30" width="10" height="3" rx="1" transform="rotate(20 109 31)"/><rect x="116" y="40" width="12" height="3" rx="1" transform="rotate(-25 122 41)"/><rect x="106" y="50" width="9" height="3" rx="1"/><rect x="120" y="56" width="11" height="3" rx="1" transform="rotate(35 125 57)"/><rect x="110" y="62" width="8" height="3" rx="1" transform="rotate(-15 114 63)"/></g></svg>`,
+mill:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M4 44 Q40 40 56 44 L84 48 Q110 50 136 46" stroke="var(--cane2)" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <g stroke="var(--steel)" stroke-width="3" fill="var(--steel2)"><circle cx="70" cy="26" r="18"/><circle cx="48" cy="60" r="16"/><circle cx="92" cy="60" r="16"/></g>
+ <g class="spin"><g stroke="var(--steel)" stroke-width="2"><line x1="70" y1="10" x2="70" y2="42"/><line x1="54" y1="26" x2="86" y2="26"/><line x1="59" y1="15" x2="81" y2="37"/><line x1="81" y1="15" x2="59" y2="37"/></g></g>
+ <g fill="var(--juice)"><path d="M66 74 q4 -8 8 0 a4 4 0 0 1 -8 0z"/><path d="M58 80 q3 -6 6 0 a3 3 0 0 1 -6 0z"/><path d="M78 80 q3 -6 6 0 a3 3 0 0 1 -6 0z"/></g>
+ <rect x="40" y="84" width="60" height="4" rx="2" fill="var(--juice)"/></svg>`,
+clar:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M28 14H112V52L82 82H58L28 52Z" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <path d="M31 22H109V50L80 79H60L31 50Z" fill="var(--juice2)"/>
+ <path d="M44 63H96L80 79H60Z" fill="var(--mol)"/>
+ <g fill="var(--mol)" opacity=".7"><circle cx="50" cy="40" r="2.5"/><circle cx="66" cy="46" r="2"/><circle cx="84" cy="38" r="2.5"/><circle cx="74" cy="54" r="2.5"/><circle cx="58" cy="56" r="2"/><circle cx="92" cy="50" r="2"/></g>
+ <path d="M4 26H28" stroke="var(--juice)" stroke-width="5"/><path d="M112 26H136" stroke="var(--juice2)" stroke-width="5"/>
+ <rect x="56" y="2" width="28" height="14" rx="3" fill="var(--sugar)" stroke="var(--steel)" stroke-width="2"/><text x="70" y="12.5" font-size="8" text-anchor="middle" fill="var(--ink)" font-family="sans-serif">CaO</text></svg>`,
+evap:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <g stroke="var(--muted)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"><path d="M26 14 q-5 -5 0 -10"/><path d="M33 16 q5 -6 0 -12"/><path d="M66 14 q-5 -5 0 -10"/><path d="M106 14 q5 -5 0 -10"/></g>
+ <path d="M38 64H58M78 64H98" stroke="var(--juice)" stroke-width="5"/>
+ <g stroke="var(--steel)" stroke-width="3">
+  <path d="M14 30 a16 12 0 0 1 32 0V80H14Z" fill="var(--steel2)"/><path d="M54 30 a16 12 0 0 1 32 0V80H54Z" fill="var(--steel2)"/><path d="M94 30 a16 12 0 0 1 32 0V80H94Z" fill="var(--steel2)"/></g>
+ <rect x="17" y="48" width="26" height="30" fill="var(--juice2)"/><rect x="57" y="54" width="26" height="24" fill="var(--juice)"/><rect x="97" y="60" width="26" height="18" fill="var(--mol)" opacity=".85"/></svg>`,
+pan:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M10 40 a32 26 0 0 1 64 0V70L60 84H24L10 70Z" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <path d="M14 46H70V69L58 80H26L14 69Z" fill="var(--juice)"/>
+ <g fill="var(--sugar)" stroke="var(--steel)" stroke-width=".6"><rect x="22" y="52" width="5" height="5" transform="rotate(45 24.5 54.5)"/><rect x="36" y="60" width="6" height="6" transform="rotate(45 39 63)"/><rect x="50" y="50" width="5" height="5" transform="rotate(45 52.5 52.5)"/><rect x="58" y="62" width="4" height="4" transform="rotate(45 60 64)"/><rect x="30" y="70" width="5" height="5" transform="rotate(45 32.5 72.5)"/><rect x="46" y="70" width="6" height="6" transform="rotate(45 49 73)"/></g>
+ <path d="M42 14V4" stroke="var(--steel)" stroke-width="4"/>
+ <rect x="84" y="46" width="52" height="30" rx="14" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <rect x="88" y="54" width="44" height="18" rx="9" fill="var(--mol)" opacity=".8"/>
+ <g fill="var(--sugar)"><circle cx="96" cy="62" r="2"/><circle cx="106" cy="66" r="2"/><circle cx="116" cy="60" r="2"/><circle cx="125" cy="65" r="2"/></g>
+ <text x="110" y="40" font-size="8.5" text-anchor="middle" fill="var(--muted)" font-family="sans-serif">ทำเย็น</text></svg>`,
+cent:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <rect x="30" y="18" width="60" height="50" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <ellipse cx="60" cy="18" rx="30" ry="8" fill="var(--steel2)" stroke="var(--steel)" stroke-width="3"/>
+ <rect x="38" y="26" width="44" height="38" fill="var(--sugar)" stroke="var(--steel)" stroke-width="1"/>
+ <g fill="var(--steel)"><circle cx="34" cy="30" r="1.6"/><circle cx="34" cy="40" r="1.6"/><circle cx="34" cy="50" r="1.6"/><circle cx="34" cy="60" r="1.6"/><circle cx="86" cy="30" r="1.6"/><circle cx="86" cy="40" r="1.6"/><circle cx="86" cy="50" r="1.6"/><circle cx="86" cy="60" r="1.6"/></g>
+ <path d="M20 30 a42 14 0 0 0 0 26" stroke="var(--accent)" stroke-width="3" fill="none"/><path d="M16 52 l4 6 l5 -5" stroke="var(--accent)" stroke-width="3" fill="none"/>
+ <g fill="var(--mol)"><path d="M50 74 q3 -6 6 0 a3 3 0 0 1 -6 0z"/><path d="M64 78 q3 -6 6 0 a3 3 0 0 1 -6 0z"/></g>
+ <path d="M96 76 L104 60 L112 66 L120 54 L130 76Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="1.5"/>
+ <path d="M94 46h16" stroke="var(--muted)" stroke-width="2"/><path d="M106 42l5 4l-5 4" stroke="var(--muted)" stroke-width="2" fill="none"/></svg>`,
+sugar:`<svg viewBox="0 0 140 90" aria-hidden="true">
+ <path d="M44 16 Q70 8 96 16 L104 80 Q70 88 36 80Z" fill="var(--sugar)" stroke="var(--steel)" stroke-width="3"/>
+ <path d="M44 16 Q70 24 96 16" stroke="var(--steel)" stroke-width="2" fill="none"/>
+ <rect x="50" y="38" width="40" height="22" rx="3" fill="var(--accent)"/>
+ <text x="70" y="53" font-size="10" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">SUGAR</text></svg>`
+};
+
+const INFO = {
+ cane:{what:"อ้อยที่เข้าหีบ ความหวาน (Pol) และเส้นใยของอ้อยเป็นตัวกำหนดว่าน้ำตาลสูงสุดที่จะได้คือเท่าไร",km:"Pol ในอ้อย"},
+ prep:{what:"ใบมีดและเครื่องฉีกตัดฉีกอ้อยให้เซลล์แตก ยิ่งแตกมาก น้ำอ้อยยิ่งออกง่ายในลูกหีบ",km:"ความสามารถสกัด (RME)"},
+ mill:{what:"ลูกหีบบีบน้ำอ้อยออก และฉีดน้ำ (อิมบิบิชั่น) ช่วยชะ น้ำตาลที่ยังติดอยู่ในชานอ้อยคือส่วนที่สูญเสีย",km:"สกัดได้ (Extraction)"},
+ clar:{what:"อุ่นน้ำอ้อยและเติมปูนขาวให้สิ่งสกปรกตกตะกอน กากตะกอนพาน้ำตาลออกไปบางส่วน และถ้าเป็นกรดมาก ซูโครสจะแตกตัว",km:"ความบริสุทธิ์น้ำใส"},
+ evap:{what:"ต้มไล่น้ำออกจากน้ำอ้อยใสในหม้อระเหยหลายลูกต่อกัน จนได้น้ำเชื่อมข้น ความร้อนและเวลาทำให้ซูโครสแตกตัวบางส่วน",km:"ความบริสุทธิ์น้ำเชื่อม"},
+ pan:{what:"เคี่ยวน้ำเชื่อมในหม้อสุญญากาศจนเกิดผลึก แล้วทำเย็นให้ผลึกโต น้ำตาลที่ค้างในกากน้ำตาลเป็นการสูญเสียที่ใหญ่ที่สุด",km:"Purity กากน้ำตาล (ต่ำ = ดี)"},
+ cent:{what:"ปั่นเหวี่ยงแยกผลึกน้ำตาลออกจากกากน้ำตาล และฉีดน้ำล้างให้ผลึกสะอาด ล้างมากไปผลึกจะละลายกลับ",km:"Pol ของน้ำตาล"}
+};
+function keyVal(id,r,p){return {cane:[p.pol,"%",1,2],prep:[r.rme,"%",1,2],mill:[r.ext,"%",1,2],clar:[r.cjPur,"%",1,2],evap:[r.syrPur,"%",1,2],pan:[r.M,"%",-1,1],cent:[r.S,"%",1,2]}[id]}
+function lossVal(id,r){return {cane:null,prep:null,mill:r.bagLoss,clar:r.cakeLoss+r.invClarLoss,evap:r.invEvapLoss,pan:r.molLoss,cent:r.undetLoss}[id]}
+function lossName(id){return {mill:"ติดชานอ้อย",clar:"กากตะกอน + แตกตัว",evap:"ซูโครสแตกตัว",pan:"ค้างในกากน้ำตาล",cent:"ไม่ทราบสาเหตุ"}[id]}
+function flowAfter(id,r){return {cane:r.flow.cane,prep:r.flow.cane,mill:r.flow.mj,clar:r.flow.cj,evap:r.flow.bh,pan:r.flow.rec,cent:r.flow.sugar}[id]}
+
+const fmt=(x,d=2)=>x.toLocaleString("th-TH",{minimumFractionDigits:d,maximumFractionDigits:d});
+const sgn=(x,d=2)=>(x>0?"+":x<0?"−":"±")+fmt(Math.abs(x),d);
+const cls=(x,good=1,eps=1e-6)=>Math.abs(x)<eps?"zero":(x*good>0?"pos":"neg");
+const decimals=s=>(String(s).split(".")[1]||"").length;
+
+function buildLine(){
+  const line=document.getElementById("line"); line.innerHTML="";
+  STAGES.forEach((s,i)=>{
+    const st=document.createElement("div"); st.className="st";
+    st.innerHTML=`<button class="card" id="card-${s.id}" aria-pressed="${s.id===activeTab}">
+      ${ICON[s.id]}<div class="no">ขั้นที่ ${i}</div><div class="nm">${s.short}</div>
+      <div class="km">${INFO[s.id].km}</div><div class="kv" id="kv-${s.id}"></div><div class="kd" id="kd-${s.id}"></div>
+      <div class="ls" id="ls-${s.id}"></div><div class="potential" id="pot-${s.id}"></div></button>`;
+    st.querySelector("button").onclick=()=>{activeTab=s.id;buildLine();buildDetail();};
+    line.appendChild(st);
+    const pp=document.createElement("div"); pp.className="pipe"; pp.innerHTML=`<span id="pipe-${s.id}"></span>`;
+    line.appendChild(pp);
+  });
+  const f=document.createElement("div"); f.className="st";
+  f.innerHTML=`<div class="card final" role="group" aria-label="ผลลัพธ์">${ICON.sugar}<div class="no">ผลลัพธ์</div><div class="nm">น้ำตาลที่ได้</div>
+    <div class="km">Yield</div><div class="kv" id="kv-final"></div><div class="kd" id="kd-final"></div><div class="ls" style="color:var(--muted)" id="ls-final"></div></div>`;
+  line.appendChild(f);
+  render();
+}
+
+function buildDetail(){
+  const s=STAGES.find(x=>x.id===activeTab), i=STAGES.indexOf(s);
+  const box=document.getElementById("detail");
+  box.innerHTML=`<div><h2>${ICON[s.id]}<span>ขั้นที่ ${i}: ${s.short}</span></h2><p class="what">${INFO[s.id].what}</p>
+    <div id="params"></div><div class="btns"><button class="btn" id="resetStage">คืนค่าขั้นนี้</button></div></div>
+    <div class="chain"><h3>ผลที่ส่งต่อไปตามสายการผลิต</h3><div id="chain"></div></div>`;
+  const pb=box.querySelector("#params");
+  s.params.forEach(p=>{
+    const d=decimals(p.step), el=document.createElement("div"); el.className="prm";
+    el.innerHTML=`<div class="top"><label for="in-${p.k}">${p.l}</label><span class="numbox"><button type="button" class="stepb" data-dir="-1" aria-label="ลดค่า ${p.l}">−</button><input type="number" inputmode="decimal" class="num" id="v-${p.k}" min="${p.min}" max="${p.max}" step="any" aria-label="พิมพ์ค่า ${p.l}"><button type="button" class="stepb" data-dir="1" aria-label="เพิ่มค่า ${p.l}">+</button><span class="u">${p.u}</span></span></div><div class="numerr" id="ne-${p.k}"></div>
+      <div class="trk">${REC[p.k]?`<span class="band" style="left:${pos(p,REC[p.k].lo)}%;width:${pos(p,REC[p.k].hi)-pos(p,REC[p.k].lo)}%"></span><span class="mark" id="mk-${p.k}"></span>`:""}
+      <input type="range" id="in-${p.k}" min="${p.min}" max="${p.max}" step="${p.step}" value="${cur[p.k]}"></div>
+      <div class="rng"><span>${fmt(p.min,d)}</span><span class="base" id="b-${p.k}"></span><span>${fmt(p.max,d)}</span></div>
+      ${p.hint?`<div class="hint">${p.hint}</div>`:""}
+      ${REC[p.k]?`<div class="rec" id="rc-${p.k}"></div>`:(NOREC[p.k]?`<div class="rec muted">${NOREC[p.k]}</div>`:"")}`;
+    pb.appendChild(el);
+    el.querySelector('input[type=range]').addEventListener("input",e=>{cur[p.k]=parseFloat(e.target.value);render();});
+    const num=el.querySelector(".num"), err=el.querySelector(".numerr"), sl=el.querySelector('input[type=range]');
+    const setVal=(v,final)=>{
+      if(!isFinite(v)){ if(final){num.value=cur[p.k];err.textContent="";} return; }
+      if(v<p.min||v>p.max){
+        err.textContent=`ใส่ได้ระหว่าง ${fmt(p.min,decimals(p.step))}–${fmt(p.max,decimals(p.step))} ${p.u}`;
+        if(!final) return; v=clamp(v,p.min,p.max);
+      } else err.textContent="";
+      if(p.k==="mills") v=Math.round(v);
+      cur[p.k]=v; sl.value=v; render(); if(final){num.value=+v.toFixed(4);setTimeout(()=>err.textContent="",1800);}
+    };
+    num.addEventListener("input",()=>setVal(parseFloat(num.value),false));
+    num.addEventListener("change",()=>setVal(parseFloat(num.value),true));
+    num.addEventListener("keydown",e=>{if(e.key==="Enter"){num.blur();}});
+    el.querySelectorAll(".stepb").forEach(b=>b.onclick=()=>{
+      const v=+(cur[p.k]+(+b.dataset.dir)*p.step).toFixed(4); setVal(clamp(v,p.min,p.max),true);});
+  });
+  box.querySelector("#resetStage").onclick=()=>{s.params.forEach(p=>cur[p.k]=base[p.k]);buildDetail();};
+  render();
+}
+
+function chainItems(b,c){
+  const it=(s,ms)=>({s,ms});
+  return [
+    it("เตรียมอ้อย + หีบสกัด",[["สกัดน้ำตาลได้",b.ext,c.ext,1,2,"%"],["น้ำตาลติดชานอ้อย",b.bagLoss,c.bagLoss,-1,3,"% อ้อย"],["น้ำอ้อยรวม Brix",b.mjBrix,c.mjBrix,1,2,"°Bx"]]),
+    it("ทำใส",[["ความบริสุทธิ์น้ำใส",b.cjPur,c.cjPur,1,2,"%"],["สูญเสียในการทำใส",b.cakeLoss+b.invClarLoss,c.cakeLoss+c.invClarLoss,-1,3,"% อ้อย"]]),
+    it("ระเหย",[["น้ำที่ต้องระเหย",b.water,c.water,-1,1,"% อ้อย"],["ซูโครสแตกตัว",b.invEvapLoss,c.invEvapLoss,-1,3,"% อ้อย"],["ความบริสุทธิ์น้ำเชื่อม",b.syrPur,c.syrPur,1,2,"%"]]),
+    it("เคี่ยว / ตกผลึก",[["Purity กากน้ำตาล",b.M,c.M,-1,1,"%"],["น้ำตาลค้างในกากน้ำตาล",b.molLoss,c.molLoss,-1,3,"% อ้อย"]]),
+    it("ปั่นแยก",[["Pol น้ำตาล",b.S,c.S,1,2,"%"],["กู้คืนในห้องต้ม (BHR)",b.bhr,c.bhr,1,2,"%"]]),
+    it("น้ำตาลที่ได้",[["Yield",b.yieldKg,c.yieldKg,1,2,"kg/ตันอ้อย"]])
+  ];
+}
+
+function attribution(){
+  const y0=model(base).yieldKg, out=[];
+  STAGES.forEach(s=>{
+    const t={...base}; let ch=false;
+    s.params.forEach(p=>{if(cur[p.k]!==base[p.k]){t[p.k]=cur[p.k];ch=true;}});
+    if(ch){const d=model(t).yieldKg-y0; if(Math.abs(d)>0.005) out.push([s.short,d]);}
+  });
+  return out.sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+}
+
+function render(){
+  const b=model(base), c=model(cur);
+  ALL.forEach(p=>{
+    const v=document.getElementById("v-"+p.k); if(!v) return;
+    const d=decimals(p.step); if(document.activeElement!==v) v.value=+cur[p.k].toFixed(Math.max(d,2)); const inp=document.getElementById("in-"+p.k); if(inp) inp.style.setProperty("--p",((cur[p.k]-p.min)/(p.max-p.min)*100)+"%");
+    const diff=cur[p.k]-base[p.k];
+    document.getElementById("b-"+p.k).textContent=Math.abs(diff)<1e-9?`ฐาน ${fmt(base[p.k],d)}`:`ฐาน ${fmt(base[p.k],d)} (${sgn(diff,d)})`;
+  });
+  const maxFlow=Math.max(cur.pol,base.pol,10);
+  STAGES.forEach(s=>{
+    const [v,u,g,d]=keyVal(s.id,c,cur), [bv]=keyVal(s.id,b,base), dv=v-bv;
+    const kv=document.getElementById("kv-"+s.id); if(!kv) return;
+    kv.textContent=fmt(v,d)+u;
+    const kd=document.getElementById("kd-"+s.id); kd.className="kd "+cls(dv,g,Math.pow(10,-d-1));
+    kd.textContent=Math.abs(dv)<Math.pow(10,-d-1)?"":sgn(dv,d);
+    const l=lossVal(s.id,c);
+    document.getElementById("ls-"+s.id).innerHTML=l==null?"&nbsp;":`เสีย ${fmt(l,2)}% อ้อย<br><span style="color:var(--muted)">${lossName(s.id)}</span>`;
+    document.getElementById("pipe-"+s.id).style.height=Math.max(3,flowAfter(s.id,c)/maxFlow*34)+"px";
+  });
+  const dy=c.yieldKg-b.yieldKg;
+  document.getElementById("kv-final").textContent=fmt(c.yieldKg,1)+" kg/tc";
+  const kdF=document.getElementById("kd-final"); kdF.className="kd "+cls(dy,1,0.005); kdF.textContent=Math.abs(dy)<0.005?"":sgn(dy,2);
+  document.getElementById("ls-final").textContent=`Recovery รวม ${fmt(c.or,1)}%`;
+  document.getElementById("yk").textContent=fmt(c.yieldKg,1);
+  const dDay=c.sugarDay-b.sugarDay, dSeason=dDay*cur.days*cur.price/1e6;
+  const att=attribution();
+  document.getElementById("say").innerHTML=Math.abs(dy)<0.005
+   ? `ยังเท่ากับค่าฐาน (สกัดได้ ${fmt(c.ext,1)}% × กู้คืนในห้องต้ม ${fmt(c.bhr,1)}%) ลองกดเลือกขั้นตอนแล้วเลื่อนปรับค่าดู`
+   : `Yield <b class="${cls(dy)}">${dy>0?"เพิ่มขึ้น":"ลดลง"} ${fmt(Math.abs(dy),2)} kg/ตันอ้อย</b> เท่ากับน้ำตาล${dy>0?"เพิ่ม":"ลด"} <b>${fmt(Math.abs(dDay),1)} ตัน/วัน</b> หรือประมาณ <b class="${cls(dy)}">${sgn(dSeason,1)} ล้านบาท</b> ต่อฤดูหีบ`+
+     (att.length?`<br><span style="color:var(--muted);font-size:.9rem">ที่มาของผลต่าง: ${att.map(a=>`${a[0]} <span class="${cls(a[1])}">${sgn(a[1],2)}</span>`).join(" · ")}</span>`:"");
+  const ch=document.getElementById("chain");
+  if(ch){
+    const any=true;
+    if(!any){ch.innerHTML=`<div class="empty">เลื่อนค่าทางซ้าย แล้วตรงนี้จะแสดงว่าแต่ละขั้นถัดไปเปลี่ยนไปอย่างไร จนถึง Yield</div>`;}
+    else{
+      ch.innerHTML="<ol>"+chainItems(b,c).map(x=>{
+        let score=0; const lines=x.ms.map(([l,bv,cv,g,d,u])=>{const dv=cv-bv,e=Math.pow(10,-d-1);
+          if(Math.abs(dv)<e) return `<div class="m">${l}: ${fmt(cv,d)} ${u} (เท่าเดิม)</div>`;
+          score+=Math.sign(dv*g); return `<div class="m">${l}: ${fmt(bv,d)} → <b class="${cls(dv,g,e)}">${fmt(cv,d)}</b> ${u}</div>`;}).join("");
+        return `<li class="${score>0?"up":score<0?"down":""}"><span class="dot"></span><div class="s">${x.s}</div>${lines}</li>`;
+      }).join("")+"</ol>";
+    }
+  }
+  renderHero(b,c); renderRec();
+  drawImpact(c,b); drawTornado();
+}
+
+
+
+const REC={
+ pi:{lo:85,hi:92,why:"เกิน 92 ได้เพิ่มน้อยลงแต่สึกหรอใบมีดและกินไฟมากขึ้น"},
+ imb:{lo:200,hi:300,why:"สูงไปน้ำอ้อยจาง ภาระหม้อระเหยและไอน้ำเพิ่ม"},
+ press:{lo:95,hi:110,why:"สูงกว่านี้เสี่ยงลูกหีบลื่น/สึกหรอและกินแรงมอเตอร์"},
+ ph:{lo:7.2,hi:8.0,why:"ต่ำไปซูโครสแตกตัว สูงไปสีเข้มและกากน้ำตาลหมดยาก"},
+ tclar:{lo:101,hi:105,why:"ต่ำกว่า 101 ตกตะกอนไม่ดี สูงกว่า 105 แตกตัวและสีเพิ่ม"},
+ cakepol:{lo:1.0,hi:2.0,why:"ลดได้ด้วยน้ำล้างหน้าหม้อกรอง แต่ล้างมากน้ำอ้อยจะจาง"},
+ sbrix:{lo:60,hi:68,why:"สูงกว่า 68 เสี่ยงผลึกเกิดในหม้อระเหยและท่ออุดตัน"},
+ tevap:{lo:112,hi:122,why:"ต่ำลงแตกตัวน้อยลง แต่กำลังระเหยต่อชั่วโมงลดลง"},
+ cpur:{lo:55,hi:60,why:"ต่ำกว่า 55 แมสควิทหนืด ปั่นแยกยาก"},
+ cbrix:{lo:96,hi:99.5,why:"สูงกว่านี้หนืดมาก ทำเย็นและปั่นแยกยาก"},
+ cool:{lo:24,hi:48,why:"นานกว่า 48 ชม. ได้เพิ่มน้อยและต้องมีถังทำเย็นเพียงพอ"},
+ wash:{lo:5,hi:10,why:"ต่ำกว่า 5 วินาที Pol น้ำตาลต่ำกว่าสเปค (~98.5) ล้างมากไปผลึกละลายกลับ"}
+};
+const NOREC={mills:"ค่านี้ขึ้นกับเครื่องจักรที่มี จึงไม่มีค่าแนะนำให้ปรับ",cakepct:"ขึ้นกับปริมาณสิ่งสกปรกในอ้อยเป็นหลัก",undet:"ใช้แทนการสูญเสียจากรั่วไหล/จุลินทรีย์ ลดได้ด้วยการดูแลความสะอาดและอุดรอยรั่ว"};
+const PMAP=Object.fromEntries(ALL.map(p=>[p.k,p]));
+const pos=(p,v)=>(v-p.min)/(p.max-p.min)*100;
+function bestFor(k,state){
+  const p=PMAP[k], r=REC[k]; let best=null,by=-1e9;
+  const n=Math.round((r.hi-r.lo)/p.step);
+  for(let i=0;i<=n;i++){
+    const v=+(r.lo+i*p.step).toFixed(4), t={...state,[k]:v}, y=model(t).yieldKg;
+    if(y>by+1e-4 || (Math.abs(y-by)<=1e-4 && Math.abs(v-state[k])<Math.abs(best-state[k]))){by=y;best=v;}
+  }
+  return best;
+}
+function optimize(state,keys,passes=3){
+  let s={...state};
+  for(let i=0;i<passes;i++) keys.forEach(k=>{s[k]=bestFor(k,s);});
+  return s;
+}
+function renderRec(){
+  const y0=model(cur).yieldKg;
+  Object.keys(REC).forEach(k=>{
+    const box=document.getElementById("rc-"+k); if(!box) return;
+    const p=PMAP[k], d=decimals(p.step), v=bestFor(k,cur), g=model({...cur,[k]:v}).yieldKg-y0;
+    document.getElementById("mk-"+k).style.left=pos(p,v)+"%";
+    const at=Math.abs(v-cur[k])<p.step/2;
+    box.innerHTML=`<div class="rt"><span>ค่าแนะนำ <b>${fmt(v,d)}</b> ${p.u}</span>
+      ${at?`<span class="ok">✓ ใช้ค่าแนะนำอยู่แล้ว</span>`:`<span class="g ${cls(g,1,0.005)}">${Math.abs(g)<0.005?"ผลต่างน้อยมาก":sgn(g,2)+" kg/tc"}</span><button class="btn mini" data-k="${k}" data-v="${v}">ใช้ค่านี้</button>`}</div>
+      <div class="rw">ช่วงปฏิบัติ ${fmt(REC[k].lo,d)}–${fmt(REC[k].hi,d)} · ${REC[k].why}</div>`;
+    const bt=box.querySelector("button"); if(bt) bt.onclick=()=>{cur[k]=v;document.getElementById("in-"+k).value=v;render();};
+  });
+  STAGES.forEach(s=>{
+    const el=document.getElementById("pot-"+s.id); if(!el) return;
+    const keys=s.params.map(p=>p.k).filter(k=>REC[k]);
+    if(!keys.length){el.textContent="";return;}
+    const g=model(optimize(cur,keys,2)).yieldKg-y0;
+    el.innerHTML=g>0.005?`ปรับได้อีก <b>+${fmt(g,2)}</b> kg/tc`:`<span class="okc">✓ ใกล้ค่าแนะนำแล้ว</span>`;
+  });
+  const opt=optimize(cur,Object.keys(REC)), ga=model(opt).yieldKg-y0;
+  document.getElementById("allGain").textContent=ga>0.005?`(+${fmt(ga,2)} kg/tc)`:"✓";
+  window.__opt=opt;
+}
+document.getElementById("applyAll").onclick=()=>{if(window.__opt){cur={...cur,...window.__opt};buildDetail();}};
+
+function renderHero(b,c){
+  const dy=c.yieldKg-b.yieldKg, pl=document.getElementById("ykd");
+  pl.className="pill "+cls(dy,1,0.005); pl.textContent=Math.abs(dy)<0.005?"เท่ากับค่าฐาน":(dy>0?"▲ ":"▼ ")+fmt(Math.abs(dy),2)+" kg/tc";
+  const chip=(l,v,dv,d,u,g=1)=>`<div class="chip"><div class="l">${l}</div><div><span class="v">${v}</span><span class="d ${cls(dv,g,Math.pow(10,-d-1))}">${Math.abs(dv)<Math.pow(10,-d-1)?"":sgn(dv,d)}</span></div></div>`;
+  const dDay=c.sugarDay-b.sugarDay, dS=dDay*cur.days*cur.price/1e6;
+  document.getElementById("chips").innerHTML=
+    chip("สกัดน้ำตาลได้ (Extraction)",fmt(c.ext,2)+"%",c.ext-b.ext,2)+
+    chip("กู้คืนในห้องต้ม (BHR)",fmt(c.bhr,2)+"%",c.bhr-b.bhr,2)+
+    chip("น้ำตาลต่อวัน",fmt(c.sugarDay,0)+" ตัน",dDay,1)+
+    chip("ผลต่างรายได้ต่อฤดู",sgn(dS,1)+" ลบ.",0,1);
+  const r=48, C=2*Math.PI*r, f=clamp((c.or-70)/30,0,1);
+  document.getElementById("gauge").innerHTML=`
+    <defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#7FD3FF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+    <circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="10"/>
+    <circle cx="60" cy="60" r="${r}" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 60 60)" style="transition:stroke-dasharray .3s"/>
+    <text x="60" y="60" text-anchor="middle" font-size="21" font-weight="600" fill="#fff" font-family="Prompt,sans-serif">${fmt(c.or,1)}%</text>
+    <text x="60" y="78" text-anchor="middle" font-size="9.5" fill="#BCD3F2" font-family="IBM Plex Sans Thai,sans-serif">Recovery รวม</text>`;
+}
+function row(name,u,bv,cv,good,d=2){const dv=cv-bv;
+  return `<tr><td>${name}${u?` <span style="color:var(--muted)">(${u})</span>`:""}</td><td>${fmt(bv,d)}</td><td>${fmt(cv,d)}</td><td class="${good===0?"zero":cls(dv,good,Math.pow(10,-d-1))}">${sgn(dv,d)}</td></tr>`;}
+function drawImpact(c,b){
+  let h=`<tr><th>ตัวชี้วัด</th><th>ฐาน</th><th>ปัจจุบัน</th><th>Δ</th></tr>`;
+  h+=`<tr class="stage"><td colspan="4">เตรียมอ้อยและหีบสกัด</td></tr>`+row("Reduced Mill Extraction","%",b.rme,c.rme,1)+row("Pol Extraction","%",b.ext,c.ext,1)+row("ความชื้นชานอ้อย","%",b.bagMoist,c.bagMoist,-1)+row("Pol ในชานอ้อย","%",b.bagPol,c.bagPol,-1)+row("น้ำอ้อยรวม","% อ้อย",b.mj,c.mj,0,1)+row("Brix น้ำอ้อยรวม","°Bx",b.mjBrix,c.mjBrix,1);
+  h+=`<tr class="stage"><td colspan="4">ทำใส</td></tr>`+row("Inversion","% Pol",b.invClar,c.invClar,-1,3)+row("Purity เพิ่มขึ้น","จุด",b.purRise,c.purRise,1)+row("Purity น้ำใส","%",b.cjPur,c.cjPur,1)+row("Pol ในกากตะกอน","% อ้อย",b.cakeLoss,c.cakeLoss,-1,3);
+  h+=`<tr class="stage"><td colspan="4">ระเหย</td></tr>`+row("น้ำที่ต้องระเหย","% อ้อย",b.water,c.water,-1,1)+row("Inversion ระเหย+เคี่ยว","% Pol",b.invEvap+b.invPan,c.invEvap+c.invPan,-1,3)+row("Purity น้ำเชื่อม (J)","%",b.syrPur,c.syrPur,1);
+  h+=`<tr class="stage"><td colspan="4">เคี่ยว / ตกผลึก</td></tr>`+row("Purity กากน้ำตาล (M)","%",b.M,c.M,-1)+row("Pol ในกากน้ำตาล","% อ้อย",b.molLoss,c.molLoss,-1,3);
+  h+=`<tr class="stage"><td colspan="4">ปั่นแยก และผลรวม</td></tr>`+row("Pol น้ำตาล (S)","%",b.S,c.S,1)+row("BHR","%",b.bhr,c.bhr,1)+row("Overall Recovery","%",b.or,c.or,1)+row("Yield","kg/ตันอ้อย",b.yieldKg,c.yieldKg,1);
+  document.getElementById("impact").innerHTML=h;
+}
+function drawTornado(){
+  const svg=document.getElementById("tornado"), css=getComputedStyle(document.documentElement), C=n=>css.getPropertyValue(n).trim();
+  const y0=model(cur).yieldKg;
+  const items=ALL.filter(p=>!["crush","price","days"].includes(p.k)).map(p=>{
+    const span=(p.max-p.min)*0.15, lo={...cur}, hi={...cur};
+    lo[p.k]=clamp(cur[p.k]-span,p.min,p.max); hi[p.k]=clamp(cur[p.k]+span,p.min,p.max);
+    if(p.k==="mills"){lo.mills=clamp(Math.round(cur.mills-1),4,6);hi.mills=clamp(Math.round(cur.mills+1),4,6);}
+    const dl=model(lo).yieldKg-y0, dh=model(hi).yieldKg-y0; return {p,dl,dh,m:Math.max(Math.abs(dl),Math.abs(dh))};
+  }).sort((a,b)=>b.m-a.m).slice(0,12);
+  const rowH=30,H=items.length*rowH+40,W=640,lx=220,cx=lx+(W-lx-20)/2,half=(W-lx-20)/2-40;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const mx=Math.max(...items.map(i=>i.m),0.1);
+  let s=`<line x1="${cx}" x2="${cx}" y1="14" y2="${H-18}" stroke="${C("--line")}"/><text x="${cx-half}" y="${H-4}" font-size="12" fill="${C("--muted")}">ปรับลง</text><text x="${cx+half}" y="${H-4}" font-size="12" text-anchor="end" fill="${C("--muted")}">ปรับขึ้น</text>`;
+  items.forEach((it,i)=>{const y=20+i*rowH;
+    s+=`<text x="${lx-10}" y="${y+14}" font-size="13" text-anchor="end" fill="${C("--ink")}">${it.p.l}</text>`;
+    [[it.dl,-1],[it.dh,1]].forEach(([d,side])=>{const w=Math.abs(d)/mx*half,x=side<0?cx-w:cx;
+      s+=`<rect x="${x}" y="${y+2}" width="${Math.max(w,.5)}" height="18" rx="2" fill="${d>=0?C("--gain"):C("--loss")}" opacity="${side<0?.6:.9}"/>`;
+      if(Math.abs(d)>0.005) s+=`<text x="${side<0?cx-w-4:cx+w+4}" y="${y+15}" font-size="11.5" text-anchor="${side<0?"end":"start"}" fill="${C("--muted")}">${sgn(d,2)}</text>`;});
+  });
+  svg.innerHTML=s;
+}
+document.getElementById("setBase").onclick=()=>{base={...cur};render();};
+document.getElementById("resetAll").onclick=()=>{cur={...DEF};base={...DEF};buildDetail();};
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",render);
+buildLine(); buildDetail();
+</script>
+</body>
+</html>
